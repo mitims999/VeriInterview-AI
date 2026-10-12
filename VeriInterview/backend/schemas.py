@@ -67,6 +67,34 @@ class AnswerEvaluation(BaseModel):
     missing_concepts: List[str]
     incorrect_concepts: List[str]
     confidence: float
+    # Member 4 additions — richer answer intelligence
+    semantic_depth: float = 0.0        # 0-1: how semantically rich the answer is vs reference
+    length_adequacy: float = 0.0       # 0-1: penalises too-short or suspiciously padded answers
+    ai_likelihood: float = 0.0         # 0-1: probability this answer was AI-generated / read
+
+
+class AIAnswerFlag(BaseModel):
+    """Per-answer AI-detection signal package (Member 4 / F7)."""
+    question_id: str
+    ai_likelihood: float               # 0.0 – 1.0
+    flags: List[str]                   # human-readable triggered rule names
+    severity: Severity
+    latency_suspicious: bool = False
+    vocab_richness_z: float = 0.0      # z-score vs candidate's own baseline; high z = richer than usual
+    sentence_uniformity: float = 0.0   # 0-1, high = suspiciously uniform sentence lengths (AI trait)
+    perfect_structure_score: float = 0.0  # 0-1, well-formed list-like structure without natural hesitation
+    answer_too_polished: bool = False   # True if multiple signals converge on "too perfect"
+
+
+class AIDetectionResult(BaseModel):
+    """Module-level result from the AI answer detector (Member 4 / F7)."""
+    feature: str = "ai_answer_detection"
+    overall_ai_likelihood: float       # 0-1, average across flagged answers
+    level: Level
+    confidence: float
+    per_answer_flags: List[AIAnswerFlag]
+    evidence: List[Evidence] = []
+    status: Literal["OK", "INSUFFICIENT_EVIDENCE", "UNAVAILABLE"] = "OK"
 
 
 class SkillVerdict(BaseModel):

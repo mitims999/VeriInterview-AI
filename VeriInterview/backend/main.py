@@ -22,7 +22,7 @@ from backend.database.session import init_db, get_db
 from backend.database import models
 from backend.modules.resume import parse_resume_bytes, build_profile
 from backend.modules.pipeline import run_full_analysis
-from backend.modules import intake_parser
+from backend.modules import intake_parser, ai_answer_detector
 from backend.adapters import video_intake
 
 app = FastAPI(title="VeriInterview API", version="0.1.0")
@@ -285,3 +285,46 @@ def interview_report(interview_id: int, db: Session = Depends(get_db)):
     interview.status = "COMPLETED"
     db.commit()
     return result
+
+
+@app.get("/api/interviews/{interview_id}/ai_detection")
+def interview_ai_detection(interview_id: int, db: Session = Depends(get_db)):
+    """
+    Member 4 — Feature 7: AI Answer Detection for a completed interview.
+
+    Runs the AI-answer detector on the interview's Q&A transcript and returns
+    per-answer suspicion flags (ai_likelihood, triggered signals, severity)
+    plus a module-level risk level.
+
+    This endpoint is designed for human review only — it never makes a
+    hiring or disqualification decision.
+    """
+    interview = db.get(models.Interview, interview_id)
+    if not interview:
+        raise HTTPException(404, "Interview not found")
+
+    from backend.schemas import QAExchange, AnswerEvaluation
+    from backend.modules import answer_evaluation as ae
+
+    qa_list = []
+    for q in interview.questions:
+        ans = q.answer
+        qa_list.append(QAExchange(
+            question_id=str(q.id),
+            question_text=q.question_text,
+            skill=q.skill,
+            difficulty=q.difficulty,
+            expected_proficiency=q.expected_proficiency,
+            reference_answer=q.reference_answer,
+            required_concepts=q.required_concepts or [],
+            candidate_answer=ans.transcript if ans else "",
+            response_latency_sec=ans.response_latency_sec if ans else 0.0,
+            answer_duration_sec=ans.answer_duration_sec if ans else 0.0,
+        ))
+
+    if not qa_list:
+        raise HTTPException(422, "No answered questions found for this interview")
+
+    evaluations = ae.evaluate_all(qa_list)
+    result = ai_answer_detector.run(qa_list, evaluations)
+    return result.model_dump()

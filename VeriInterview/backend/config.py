@@ -50,8 +50,20 @@ FUSION_CAPS = FusionCaps()
 RISK_THRESHOLDS = RiskThresholds()
 SPEECH_WEIGHTS = SpeechBehaviorWeights()
 
-# answer-evaluation weighting (semantic similarity vs concept coverage)
+CORS_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+# ── Member 4: Answer evaluation dimension weights ─────────────────────────────
+# These three weights determine the composite answer score.
+# semantic + concept + depth should roughly sum to 1.0 in the formula inside
+# answer_evaluation.py.  Adjust here if you want concept coverage to dominate.
 ANSWER_EVAL_SEMANTIC_WEIGHT = 0.5
 ANSWER_EVAL_CONCEPT_WEIGHT = 0.5
+ANSWER_EVAL_DEPTH_WEIGHT = 0.2    # depth is a bonus on top, not replacing the two main signals
 
-CORS_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
+# ── Member 4: AI answer detection thresholds ──────────────────────────────────
+AI_DETECTION_VOCAB_Z = 1.8              # z-score threshold for vocabulary richness spike
+AI_DETECTION_SENTENCE_CV = 0.30        # CV below this = suspiciously uniform sentences
+AI_DETECTION_HEDGE_RATIO = 0.03        # fraction of tokens that must be hedges/fillers
+AI_DETECTION_LATENCY_FACTOR = 2.0      # latency must be ≥ X × mean for spike flag
+AI_DETECTION_QUALITY_FLOOR = 72.0      # score above which a latency spike is suspicious
+AI_DETECTION_Q_SEM_GAP = 0.15         # max similarity to question for stock-answer flag

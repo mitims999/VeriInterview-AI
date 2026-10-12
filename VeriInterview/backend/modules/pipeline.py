@@ -11,7 +11,7 @@ scoring logic of its own beyond passing data between modules, per the
 from __future__ import annotations
 from backend.schemas import QAExchange, ResumeClaim
 from backend.modules import answer_evaluation, skill_verification, buzzword, response_timing, capability
-from backend.modules import knowledge_ownership, evidence_fusion
+from backend.modules import knowledge_ownership, evidence_fusion, ai_answer_detector
 from backend.adapters import opensmile_adapter, proctoring_adapter, syncnet_adapter, insightface_adapter
 from backend.modules.resume import build_profile
 
@@ -23,8 +23,12 @@ def run_full_analysis(record: dict) -> dict:
     # Feature 2/3: resume profile + skill verification
     profile = build_profile(record.get("resume_text", ""), record.get("job_description", ""), record.get("resume_claims", []))
 
-    # Feature 5: answer correctness / expected-answer matching
+    # Feature 4 (Member 4): multi-dimension answer correctness / expected-answer matching
     evaluations = answer_evaluation.evaluate_all(qa_list)
+
+    # Feature 7 (Member 4): AI answer detection — runs after evaluations, mutates
+    # each evaluation's ai_likelihood in-place as a side-effect
+    ai_result = ai_answer_detector.run(qa_list, evaluations)
 
     # Feature 3 aggregation
     verdicts = skill_verification.verify_skills(qa_list, evaluations, resume_claims)
@@ -84,6 +88,8 @@ def run_full_analysis(record: dict) -> dict:
         "skill_profile": profile.model_dump(),
         "skill_verdicts": [v.model_dump() for v in verdicts],
         "answer_evaluations": [e.model_dump() for e in evaluations],
+        "answer_summary": answer_evaluation.answer_summary(evaluations),
+        "ai_detection": ai_result.model_dump(),
         "buzzword_coverage": bw,
         "qa_list": [qa.model_dump() for qa in qa_list],
     }
