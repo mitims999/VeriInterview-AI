@@ -60,3 +60,96 @@
 @media(max-width:1200px){.saved-grid{gap:16px}.saved-card{padding:20px}.saved-card h2{font-size:19px}.completed-label{font-size:8px}.saved-card-top{gap:6px}.candidate-avatar{width:37px;height:37px}}
 @media(max-width:1000px){.saved-grid{grid-template-columns:1fr 1fr}.saved-intro{flex-direction:column;gap:10px}.saved-card{padding:24px}.saved-card-top{margin-bottom:20px}}
 @media(max-width:580px){.saved-grid{grid-template-columns:1fr}.saved-intro{padding:18px 20px}.saved-intro p{font-size:11px}.saved-card{padding:24px}.saved-card-top{margin-bottom:18px}.candidate-summary{margin:17px 0}.saved-result{padding:18px 0 22px}.completed-label{font-size:10px}.saved-card h2{font-size:22px}.saved-stats{font-size:10px}}
+
+/* ========================================================================
+   Smart Analysis — new nav badge, form sections, keyword report
+   ======================================================================== */
+
+/* Nav badge for "NEW" label */
+.nav-badge{margin-left:auto;font-size:8px;font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,#78566b,#956c84);color:#fff;padding:2px 6px;border-radius:3px;line-height:1.4}
+.nav-item.active .nav-badge{background:linear-gradient(135deg,#5a7248,#6a8555)}
+
+/* Smart info section */
+.smart-info-section .section-heading{border-bottom:0;padding-bottom:0}
+.smart-info-section .step-number{background:linear-gradient(135deg,#e7efde,#dbe4d1);border-color:#c8d8b8;display:grid;place-items:center}
+.smart-features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:6px 24px 24px}
+.smart-feature{padding:17px;background:#f5f8f0;border:1px solid #e4ebd8;border-radius:7px;transition:border-color .15s,background .15s}
+.smart-feature:hover{background:#edf3e4;border-color:#c8d8b3}
+.smart-feature-icon{font-size:20px;display:block;margin-bottom:10px}
+.smart-feature strong{font-size:12px;display:block;margin-bottom:6px;color:#4a573a}
+.smart-feature p{font-size:11px;color:#7c806c;line-height:1.7;margin:0}
+
+/* Smart notice bar */
+.smart-notice{background:#e9f0df;border-color:#d5e1c3;color:#5e7247}
+.smart-notice strong{color:#4a6035}
+
+/* Keyword summary panel in report */
+.keyword-summary-panel{padding:25px}
+
+/* ---- Keyword Report component ---- */
+.keyword-report{display:flex;flex-direction:column;gap:28px;padding:6px 24px 24px}
+
+.keyword-summary-banner{display:flex;align-items:center;gap:22px;padding:20px 24px;border-radius:8px;border:1px solid #dfe4d8}
+.keyword-summary-banner.low{background:#edf3e5;border-color:#d6e4c6}
+.keyword-summary-banner.medium{background:#f6f0de;border-color:#ead9b2}
+.keyword-summary-banner.high{background:#f9ece6;border-color:#eacfc2}
+.keyword-summary-score{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:72px;min-height:72px;border-radius:50%;border:3px solid currentColor}
+.keyword-summary-banner.low .keyword-summary-score{color:#6a8555;border-color:#b4cf9a}
+.keyword-summary-banner.medium .keyword-summary-score{color:#b5933b;border-color:#dac37f}
+.keyword-summary-banner.high .keyword-summary-score{color:#a34739;border-color:#d9917e}
+.keyword-score-number{font-size:24px;font-weight:500;letter-spacing:-1px;line-height:1.1}
+.keyword-score-label{font-size:8px;text-align:center;line-height:1.3;letter-spacing:.3px;margin-top:2px}
+.keyword-summary-text{font-size:12px;line-height:1.85;color:#6e6c5d;flex:1}
+
+/* Skill cross-reference */
+.keyword-section{border-top:1px solid #eeece3;padding-top:20px}
+.keyword-section .section-heading{padding:0 0 16px;border-bottom:0}
+.keyword-section .section-heading h3{font-size:14px;font-weight:600;letter-spacing:-.2px}
+.keyword-section .section-heading p{font-size:12px;color:var(--muted);margin-top:4px}
+.skill-cross-ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.skill-cross-ref-card{background:#f9faf4;border:1px solid #e5e8dc;border-radius:7px;padding:16px;transition:border-color .15s}
+.skill-cross-ref-card:hover{border-color:#c5d1b4}
+.skill-cross-ref-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.skill-cross-ref-header strong{font-size:13px;font-weight:550}
+.skill-support-badge{font-size:9px;font-weight:600;letter-spacing:.5px;padding:3px 8px;border-radius:3px;color:#fff;white-space:nowrap}
+.skill-cross-ref-message{font-size:11px;color:#7b7a6b;line-height:1.7;margin-bottom:10px}
+.skill-sim-bar{height:4px;background:#eeeee4;border-radius:3px;overflow:hidden}
+.skill-sim-fill{height:100%;border-radius:3px;transition:width .4s}
+.skill-sim-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:8px;font-size:9px;color:#9c9886}
+.skill-mentioned-badge{display:inline-flex;align-items:center;gap:3px;background:#edf3e5;color:#6a8555;padding:2px 6px;border-radius:3px;font-size:8px}
+
+/* Buzzword analysis */
+.buzzword-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.buzzword-stat{background:#f7f8f2;border:1px solid #e6eadb;border-radius:6px;padding:16px;text-align:center}
+.buzzword-stat-number{display:block;font-size:26px;font-weight:450;letter-spacing:-1px;color:#5a634c;line-height:1.2;margin-bottom:6px}
+.buzzword-stat-number.good{color:#6a8555}
+.buzzword-stat-number.warning{color:#b5933b}
+.buzzword-stat span{font-size:10px;color:#9a988c}
+.buzzword-list{grid-column:1/-1;padding-top:6px}
+.buzzword-list strong{font-size:11px;color:#73796e;display:block;margin-bottom:8px}
+.buzzword-tags{display:flex;flex-wrap:wrap;gap:6px}
+.buzzword-tag{font-size:11px;padding:5px 10px;border-radius:4px;border:1px solid #e0e0d4;background:#f5f5ee;color:#6e725e}
+.buzzword-tag.good{background:#edf3e5;border-color:#d2e2be;color:#5a7a42}
+.buzzword-tag.warning{background:#fdf5e4;border-color:#ead9b4;color:#957027}
+.buzzword-tag.neutral{background:#f0f0e8;border-color:#ddddd0;color:#6e725e}
+.stuffed-badge{font-size:10px;color:#a34739;background:#f9ece6;border:1px solid #eacfc2;padding:4px 9px;border-radius:4px;white-space:nowrap}
+
+/* Hollow claims */
+.hollow-claims-list{display:flex;flex-direction:column;gap:8px}
+.hollow-claim-item{display:flex;align-items:start;gap:10px;padding:12px 14px;background:#fdf8f0;border:1px solid #edd9c5;border-radius:6px;font-size:11px;line-height:1.7}
+.hollow-claim-item svg{color:#c08a3d;flex-shrink:0;margin-top:2px}
+.hollow-phrase{font-weight:600;color:#956c27;white-space:nowrap;flex-shrink:0}
+.hollow-message{color:#8a7b5e}
+
+/* Tab alert dot */
+.keyword-tab{position:relative}
+.tab-alert{display:inline-grid;place-items:center;width:16px;height:16px;font-size:9px;font-weight:700;color:#fff;background:#a34739;border-radius:50%;margin-left:6px}
+
+/* Format examples with 3 columns */
+.format-examples{grid-template-columns:repeat(3,1fr)!important}
+
+/* Responsive */
+@media(max-width:1000px){.smart-features-grid{grid-template-columns:1fr 1fr}.buzzword-grid{grid-template-columns:repeat(2,1fr)}.skill-cross-ref-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.keyword-summary-banner{flex-direction:column;align-items:start;gap:14px}.smart-features-grid{grid-template-columns:1fr}}
+@media(max-width:580px){.buzzword-grid{grid-template-columns:1fr 1fr}.skill-cross-ref-grid{grid-template-columns:1fr}.format-examples{grid-template-columns:1fr!important}}
+@media(max-width:460px){.keyword-summary-score{min-width:58px;min-height:58px}.keyword-score-number{font-size:20px}.buzzword-grid{grid-template-columns:1fr}.smart-features-grid{grid-template-columns:1fr}}

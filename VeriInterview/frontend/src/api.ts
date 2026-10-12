@@ -141,3 +141,93 @@ export async function analyzeIntake(input: AnalyzeInput): Promise<FullReport & {
   const r = await fetch(`${BASE}/analyze`, { method: "POST", body: fd });
   return readResponse(r);
 }
+
+export interface TestedSkill {
+  skill: string;
+  in_resume: boolean;
+  tested_in_interview: boolean;
+  questions_used: string[];
+  demonstrated_score: number;
+  semantic_similarity: number;
+  support_level: "STRONG" | "MODERATE" | "SURFACE" | "MISMATCH" | string;
+  match_status: "MATCH" | "PARTIAL" | "SURFACE" | "MISMATCH" | string;
+  message: string;
+}
+
+export interface UntestedSkill {
+  skill: string;
+  in_resume: boolean;
+  tested_in_interview: boolean;
+  support_level: "NOT_TESTED" | string;
+  match_status: "NOT_TESTED" | string;
+  semantic_similarity: number;
+  message: string;
+}
+
+export interface SkillCrossReference {
+  skill: string;
+  in_resume?: boolean;
+  tested_in_interview?: boolean;
+  questions_used?: string[];
+  demonstrated_score?: number;
+  mentioned_in_transcript?: boolean;
+  semantic_similarity: number;
+  support_level: string;
+  match_status?: string;
+  message: string;
+}
+
+export interface KeywordDetection {
+  hollow_claims: { phrase: string; type: string; severity: string; message: string }[];
+  buzzword_analysis: {
+    total_buzzwords: number;
+    buzzwords_found: string[];
+    substantiated: string[];
+    unsubstantiated: string[];
+    density_percent: number;
+    is_stuffed: boolean;
+  };
+  extracted_skills: string[];
+  cross_reference: {
+    tested_skills?: TestedSkill[];
+    untested_skills?: UntestedSkill[];
+    skill_cross_reference: SkillCrossReference[];
+    total_skills: number;
+    tested_count?: number;
+    verified_count?: number;
+    mismatch_count?: number;
+    untested_count?: number;
+    supported_count: number;
+    unsupported_count: number;
+    surface_only_count?: number;
+    match_rate_percent?: number;
+    support_ratio: number;
+  } | null;
+  resume_suspicion_score: number;
+  summary: string;
+}
+
+export interface SmartReport extends FullReport {
+  keyword_detection: KeywordDetection;
+  transcript_skills: string[];
+  parsed_questions_count: number;
+  analysis_mode: "smart";
+}
+
+export interface SmartAnalyzeInput {
+  candidateName: string;
+  jobDescription: string;
+  resume: File;
+  transcript: File;
+}
+
+export async function smartAnalyze(input: SmartAnalyzeInput): Promise<SmartReport> {
+  const fd = new FormData();
+  fd.append("candidate_name", input.candidateName);
+  fd.append("job_description", input.jobDescription);
+  fd.append("resume", input.resume);
+  fd.append("transcript", input.transcript);
+  const r = await fetch(`${BASE}/smart-analyze`, { method: "POST", body: fd });
+  return readResponse(r);
+}
+

@@ -96,7 +96,10 @@ def _blend_profile_and_timing(profile_risk_score: float, verdicts, timing_result
                   message=f"{v.skill}: resume claim not supported by interview performance (verdict: {v.verdict}).")
         for v in verdicts if v.verdict in ("RESUME_INTERVIEW_MISMATCH", "WEAKLY_SUPPORTED")
     ]
-    combined_score = min(100.0, 0.6 * profile_risk_score + 0.4 * timing_result.score) if timing_result.status == "OK" else profile_risk_score
+    if profile_risk_score >= 40:
+        combined_score = profile_risk_score
+    else:
+        combined_score = min(100.0, 0.6 * profile_risk_score + 0.4 * timing_result.score) if timing_result.status == "OK" else profile_risk_score
     level = "LOW" if combined_score <= 30 else ("MEDIUM" if combined_score <= 60 else "HIGH")
     evidence = mismatch_evidence + timing_result.evidence
     if not evidence:

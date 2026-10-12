@@ -23,6 +23,8 @@ from backend.database import models
 from backend.modules.resume import parse_resume_bytes, build_profile
 from backend.modules.pipeline import run_full_analysis
 from backend.modules import intake_parser
+from backend.modules import smart_transcript_parser
+from backend.modules import keyword_detector
 from backend.adapters import video_intake
 
 app = FastAPI(title="VeriInterview API", version="0.1.0")
@@ -284,4 +286,94 @@ def interview_report(interview_id: int, db: Session = Depends(get_db)):
     db.add(rec)
     interview.status = "COMPLETED"
     db.commit()
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Smart Analyze: just resume + free-form transcript, no structured format.
+# ---------------------------------------------------------------------------
+
+@app.post("/api/smart-analyze")
+async def smart_analyze(
+    candidate_name: str = Form(...),
+    job_description: str = Form(""),
+    resume: UploadFile = File(...),
+    transcript: UploadFile = File(...),
+):
+    """
+    Smart analysis endpoint — accepts a resume and a free-form audio transcript
+    (e.g. PDF, DOCX, TXT formats). Automatically extracts Q&A pairs, detects skills,
+    cross-references resume claims with interview answers, and runs the full
+    VeriInterview analysis pipeline.
+
+    No structured [Q1] format or separate ideal-answers file needed.
+    """
+    from backend.modules.document_parser import parse_document_bytes
+
+    resume_bytes = await resume.read()
+    transcript_bytes = await transcript.read()
+
+    resume_text = parse_document_bytes(resume.filename or "resume.txt", resume_bytes)
+    transcript_text = parse_document_bytes(transcript.filename or "transcript.txt", transcript_bytes)
+
+    if not resume_text.strip():
+        raise HTTPException(
+            400,
+            "Could not extract readable text from the uploaded resume file. "
+            "Please upload a standard PDF, DOCX, or TXT resume."
+        )
+
+    if not transcript_text.strip():
+        raise HTTPException(
+            400,
+            "Could not extract readable text from the uploaded transcript file. "
+            "Please upload a standard text, PDF, or DOCX transcript."
+        )
+
+    # Step 1: Parse free-form transcript into structured Q&A pairs
+    qa_list = smart_transcript_parser.parse_free_transcript(
+        transcript_text, resume_text
+    )
+
+    if not qa_list:
+        raise HTTPException(
+            400,
+            "Could not extract any Q&A pairs from the transcript. "
+            "Please ensure it contains interview questions and candidate answers "
+            "(e.g. 'Interviewer: ... / Candidate: ...' or 'Q: ... / A: ...')."
+        )
+
+    # Step 2: Infer resume claims from extracted skills
+    known_skills = sorted({qa["skill"] for qa in qa_list})
+    resume_claims = intake_parser.infer_resume_claims(resume_text, known_skills)
+
+    # Step 3: Build the analysis record and run pipeline first
+    record = {
+        "candidate_name": candidate_name,
+        "job_description": job_description,
+        "resume_text": resume_text,
+        "resume_claims": resume_claims,
+        "qa_list": qa_list,
+        "speech_features": None,
+        "behavior_signals": None,
+        "identity_signals": None,
+        "av_signals": None,
+        "counterfactuals": [],
+    }
+    result = run_full_analysis(record)
+
+    # Step 4: Run keyword detection & cross-referencing with answer evaluations
+    kw_report = keyword_detector.detect_all(
+        resume_text=resume_text,
+        transcript_text=transcript_text,
+        qa_list=qa_list,
+        evaluations=result.get("answer_evaluations", []),
+    )
+
+    # Step 5: Enrich with keyword detection + cross-reference data
+    result["keyword_detection"] = kw_report
+    result["transcript_skills"] = smart_transcript_parser.extract_skills_from_transcript(transcript_text)
+    result["parsed_questions_count"] = len(qa_list)
+    result["analysis_mode"] = "smart"
+
     return result
