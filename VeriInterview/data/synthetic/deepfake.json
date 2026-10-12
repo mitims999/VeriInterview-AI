@@ -1,0 +1,162 @@
+{
+  "candidate_name": "Deep Fake Test Subject",
+  "scenario_label": "Deepfake / Identity Simulation",
+  "expected_outcome": "HIGH A/V risk, possibly HIGH overall risk.",
+  "job_description": "We are hiring a Backend Engineer with strong Python skills and hands-on AWS experience. The ideal candidate has designed and deployed production systems on EC2, S3, and Lambda, understands IAM and VPC networking, has used auto-scaling and load balancer configurations, and is comfortable with machine learning concepts such as overfitting, class imbalance, and model evaluation using XGBoost or similar techniques. Kubernetes experience is a plus.",
+  "resume_text": "Designed and deployed AWS architecture. Strong ML background using XGBoost.",
+  "resume_claims": [
+    {
+      "skill": "AWS",
+      "claim_text": "Designed and deployed AWS architecture.",
+      "claim_strength": "strong"
+    },
+    {
+      "skill": "Machine Learning",
+      "claim_text": "Strong ML background using XGBoost.",
+      "claim_strength": "strong"
+    }
+  ],
+  "qa_list": [
+    {
+      "question_id": "Q1",
+      "question_text": "What is overfitting in machine learning and how do you detect it?",
+      "skill": "Machine Learning",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+      "required_concepts": [
+        "training data",
+        "noise",
+        "generalization",
+        "unseen data",
+        "validation"
+      ],
+      "candidate_answer": "Overfitting is when a model fits the training set too closely, including its noise, and fails to generalize to new data.",
+      "response_latency_sec": 2.0,
+      "answer_duration_sec": 40
+    },
+    {
+      "question_id": "Q2",
+      "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+      "skill": "AWS",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+      "required_concepts": [
+        "EC2",
+        "S3",
+        "Lambda",
+        "IAM",
+        "auto-scaling",
+        "load balancer"
+      ],
+      "candidate_answer": "I used EC2, S3, Lambda and IAM roles, with load balancers and auto-scaling for reliability.",
+      "response_latency_sec": 2.3,
+      "answer_duration_sec": 48
+    },
+    {
+      "question_id": "Q3",
+      "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+      "skill": "Machine Learning",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+      "required_concepts": [
+        "resampling",
+        "class weight",
+        "F1",
+        "precision",
+        "recall",
+        "XGBoost"
+      ],
+      "candidate_answer": "Resampling, class weighting, and using F1 or PR-AUC instead of accuracy are the standard approaches, along with tools like XGBoost's scale_pos_weight.",
+      "response_latency_sec": 2.6,
+      "answer_duration_sec": 52
+    },
+    {
+      "question_id": "Q4",
+      "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+      "skill": "AWS",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+      "required_concepts": [
+        "load balancer",
+        "auto-scaling",
+        "traffic distribution",
+        "demand"
+      ],
+      "candidate_answer": "Load balancers distribute traffic; auto-scaling groups adjust instance counts.",
+      "response_latency_sec": 2.1,
+      "answer_duration_sec": 36
+    }
+  ],
+  "speech_features": [
+    {
+      "question_id": "Q1",
+      "pitch_hz": 171,
+      "loudness_db": -18,
+      "speech_rate_wpm": 129,
+      "pause_ratio": 0.15,
+      "speech_silence_ratio": 0.78
+    },
+    {
+      "question_id": "Q2",
+      "pitch_hz": 173,
+      "loudness_db": -17,
+      "speech_rate_wpm": 131,
+      "pause_ratio": 0.14,
+      "speech_silence_ratio": 0.79
+    },
+    {
+      "question_id": "Q3",
+      "pitch_hz": 170,
+      "loudness_db": -18,
+      "speech_rate_wpm": 127,
+      "pause_ratio": 0.15,
+      "speech_silence_ratio": 0.78
+    },
+    {
+      "question_id": "Q4",
+      "pitch_hz": 172,
+      "loudness_db": -18,
+      "speech_rate_wpm": 130,
+      "pause_ratio": 0.15,
+      "speech_silence_ratio": 0.79
+    }
+  ],
+  "behavior_signals": {
+    "gaze_off_screen_pct": 0.08,
+    "head_pose_variance": "normal",
+    "multi_person_detected": false,
+    "phone_detected": false
+  },
+  "identity_signals": {
+    "min_frame_similarity_to_anchor": 0.71,
+    "face_lost_pct": 0.18
+  },
+  "av_signals": {
+    "av_offset_frames": 9,
+    "sync_confidence": 0.35
+  },
+  "counterfactuals": [
+    {
+      "skill": "Machine Learning",
+      "followup_question_id": "Q3F",
+      "perturbed_assumption": "the minority class becomes only 1% of the dataset instead of 30%",
+      "expected_new_concepts": [
+        "SMOTE",
+        "oversampling",
+        "class weight",
+        "evaluation metric change",
+        "anomaly detection framing"
+      ],
+      "expected_retained_concepts": [
+        "precision",
+        "recall",
+        "F1"
+      ],
+      "candidate_followup_answer": "At that skew you'd lean on SMOTE, adjust class weights further, and evaluate with precision/recall or PR-AUC rather than F1 alone."
+    }
+  ]
+}

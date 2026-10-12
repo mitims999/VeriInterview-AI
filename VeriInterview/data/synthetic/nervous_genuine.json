@@ -1,0 +1,162 @@
+{
+  "candidate_name": "Priya Nair",
+  "scenario_label": "Nervous Genuine Candidate",
+  "expected_outcome": "Speech/gaze anomaly may read HIGH, but overall integrity risk should NOT automatically be HIGH.",
+  "job_description": "We are hiring a Backend Engineer with strong Python skills and hands-on AWS experience. The ideal candidate has designed and deployed production systems on EC2, S3, and Lambda, understands IAM and VPC networking, has used auto-scaling and load balancer configurations, and is comfortable with machine learning concepts such as overfitting, class imbalance, and model evaluation using XGBoost or similar techniques. Kubernetes experience is a plus.",
+  "resume_text": "Designed and deployed AWS-based systems including EC2, S3, and Lambda. Applied XGBoost for imbalanced classification problems.",
+  "resume_claims": [
+    {
+      "skill": "AWS",
+      "claim_text": "Designed and deployed AWS-based systems including EC2, S3, and Lambda.",
+      "claim_strength": "strong"
+    },
+    {
+      "skill": "Machine Learning",
+      "claim_text": "Applied XGBoost for imbalanced classification problems.",
+      "claim_strength": "medium"
+    }
+  ],
+  "qa_list": [
+    {
+      "question_id": "Q1",
+      "question_text": "What is overfitting in machine learning and how do you detect it?",
+      "skill": "Machine Learning",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+      "required_concepts": [
+        "training data",
+        "noise",
+        "generalization",
+        "unseen data",
+        "validation"
+      ],
+      "candidate_answer": "Sorry, um, overfitting is \u2014 okay \u2014 it's when the model basically memorizes the training data, noise included, so it does badly on data it hasn't seen before.",
+      "response_latency_sec": 3.4,
+      "answer_duration_sec": 44
+    },
+    {
+      "question_id": "Q2",
+      "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+      "skill": "AWS",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+      "required_concepts": [
+        "EC2",
+        "S3",
+        "Lambda",
+        "IAM",
+        "auto-scaling",
+        "load balancer"
+      ],
+      "candidate_answer": "I, uh, deployed things on EC2 behind a load balancer, used auto-scaling for traffic, kept artifacts in S3, and used Lambda for some event triggers, with IAM roles scoping access.",
+      "response_latency_sec": 3.9,
+      "answer_duration_sec": 58
+    },
+    {
+      "question_id": "Q3",
+      "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+      "skill": "Machine Learning",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+      "required_concepts": [
+        "resampling",
+        "class weight",
+        "F1",
+        "precision",
+        "recall",
+        "XGBoost"
+      ],
+      "candidate_answer": "Sorry, let me think \u2014 you'd resample the data, maybe oversample the minority class, use class weights, and definitely not trust plain accuracy \u2014 F1 or precision/recall instead.",
+      "response_latency_sec": 4.6,
+      "answer_duration_sec": 63
+    },
+    {
+      "question_id": "Q4",
+      "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+      "skill": "AWS",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+      "required_concepts": [
+        "load balancer",
+        "auto-scaling",
+        "traffic distribution",
+        "demand"
+      ],
+      "candidate_answer": "A load balancer spreads traffic across instances, auto-scaling changes how many instances you have based on demand.",
+      "response_latency_sec": 3.1,
+      "answer_duration_sec": 34
+    }
+  ],
+  "speech_features": [
+    {
+      "question_id": "Q1",
+      "pitch_hz": 178,
+      "loudness_db": -19,
+      "speech_rate_wpm": 122,
+      "pause_ratio": 0.17,
+      "speech_silence_ratio": 0.75
+    },
+    {
+      "question_id": "Q2",
+      "pitch_hz": 181,
+      "loudness_db": -19,
+      "speech_rate_wpm": 119,
+      "pause_ratio": 0.18,
+      "speech_silence_ratio": 0.74
+    },
+    {
+      "question_id": "Q3",
+      "pitch_hz": 214,
+      "loudness_db": -25,
+      "speech_rate_wpm": 88,
+      "pause_ratio": 0.38,
+      "speech_silence_ratio": 0.55
+    },
+    {
+      "question_id": "Q4",
+      "pitch_hz": 219,
+      "loudness_db": -26,
+      "speech_rate_wpm": 84,
+      "pause_ratio": 0.41,
+      "speech_silence_ratio": 0.52
+    }
+  ],
+  "behavior_signals": {
+    "gaze_off_screen_pct": 0.28,
+    "head_pose_variance": "elevated",
+    "multi_person_detected": false,
+    "phone_detected": false
+  },
+  "identity_signals": {
+    "min_frame_similarity_to_anchor": 0.97,
+    "face_lost_pct": 0.03
+  },
+  "av_signals": {
+    "av_offset_frames": 1,
+    "sync_confidence": 0.9
+  },
+  "counterfactuals": [
+    {
+      "skill": "Machine Learning",
+      "followup_question_id": "Q3F",
+      "perturbed_assumption": "the minority class becomes only 1% of the dataset instead of 30%",
+      "expected_new_concepts": [
+        "SMOTE",
+        "oversampling",
+        "class weight",
+        "evaluation metric change",
+        "anomaly detection framing"
+      ],
+      "expected_retained_concepts": [
+        "precision",
+        "recall",
+        "F1"
+      ],
+      "candidate_followup_answer": "Oh \u2014 okay, at 1%, I think it becomes more like anomaly detection, so I'd use SMOTE-style oversampling, push the class weights harder, and switch to precision/recall or PR-AUC since F1 would be shaky at that skew."
+    }
+  ]
+}

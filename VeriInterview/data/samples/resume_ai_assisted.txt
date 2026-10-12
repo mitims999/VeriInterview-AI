@@ -1,0 +1,5 @@
+Karan Verma
+Backend Engineer
+
+Designed and deployed AWS architecture at scale. Led migration to Kubernetes. Deep
+experience with XGBoost and imbalanced classification in production.

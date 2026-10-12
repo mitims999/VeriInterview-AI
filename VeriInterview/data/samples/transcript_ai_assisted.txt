@@ -1,0 +1,19 @@
+[Q1]
+answer: Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data.
+latency: 1.6
+duration: 42
+
+[Q2]
+answer: I used EC2, S3, Lambda, IAM, auto-scaling and load balancers to build a highly available recommendation platform serving millions of requests.
+latency: 2.0
+duration: 50
+
+[Q3]
+answer: To handle an imbalanced dataset you can use resampling techniques such as SMOTE for oversampling the minority class, apply class weighting during training, and evaluate using F1-score or precision-recall AUC rather than raw accuracy, since accuracy is misleading under class imbalance.
+latency: 8.9
+duration: 65
+
+[Q4]
+answer: A load balancer distributes traffic, auto-scaling changes instance count with demand.
+latency: 1.7
+duration: 30

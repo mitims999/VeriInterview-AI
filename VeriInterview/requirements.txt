@@ -1,0 +1,26 @@
+fastapi==0.136.0
+uvicorn==0.44.0
+pydantic==2.12.5
+SQLAlchemy==2.0.52
+python-multipart==0.0.26
+pypdf==6.16.1
+python-docx==1.2.0
+networkx==3.6.1
+scikit-learn==1.8.0
+numpy==2.2.6
+
+# Optional: enables real sentence-transformers embeddings for the expected-answer
+# matching module (backend/adapters/sentence_embed.py). If not installed, or if the
+# model can't be downloaded, the module transparently falls back to the scikit-learn
+# TF-IDF cosine-similarity path above with no code changes required.
+# sentence-transformers>=3.0
+
+# Optional, for real (non-adapter-stub) integrations — see docs/MODELS.md and
+# docs/LIMITATIONS.md for exactly what each of these needs (GPU, model downloads,
+# raw audio/video capture) before they can replace their adapter's fixture-driven path:
+# opensmile-python   # audeering/opensmile-python — voice modulation
+# insightface        # deepinsight/insightface — face identity
+# onnxruntime        # required by insightface
+# opencv-python      # required by Proctoring-AI and SyncNet
+# dlib               # required by Proctoring-AI's landmark detector
+# torch               # required by syncnet_python

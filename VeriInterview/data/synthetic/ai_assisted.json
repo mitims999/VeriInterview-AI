@@ -1,0 +1,167 @@
+{
+  "candidate_name": "Karan Verma",
+  "scenario_label": "AI-assisted Simulation",
+  "expected_outcome": "MEDIUM/HIGH integrity risk: resume/answer mismatch, latency anomalies, behavior anomalies.",
+  "job_description": "We are hiring a Backend Engineer with strong Python skills and hands-on AWS experience. The ideal candidate has designed and deployed production systems on EC2, S3, and Lambda, understands IAM and VPC networking, has used auto-scaling and load balancer configurations, and is comfortable with machine learning concepts such as overfitting, class imbalance, and model evaluation using XGBoost or similar techniques. Kubernetes experience is a plus.",
+  "resume_text": "Designed and deployed AWS architecture at scale. Led migration to Kubernetes. Deep experience with XGBoost and imbalanced classification in production.",
+  "resume_claims": [
+    {
+      "skill": "AWS",
+      "claim_text": "Designed and deployed AWS architecture at scale.",
+      "claim_strength": "strong"
+    },
+    {
+      "skill": "Kubernetes",
+      "claim_text": "Led migration to Kubernetes.",
+      "claim_strength": "strong"
+    },
+    {
+      "skill": "Machine Learning",
+      "claim_text": "Deep experience with XGBoost and imbalanced classification in production.",
+      "claim_strength": "strong"
+    }
+  ],
+  "qa_list": [
+    {
+      "question_id": "Q1",
+      "question_text": "What is overfitting in machine learning and how do you detect it?",
+      "skill": "Machine Learning",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+      "required_concepts": [
+        "training data",
+        "noise",
+        "generalization",
+        "unseen data",
+        "validation"
+      ],
+      "candidate_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data.",
+      "response_latency_sec": 1.6,
+      "answer_duration_sec": 42
+    },
+    {
+      "question_id": "Q2",
+      "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+      "skill": "AWS",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+      "required_concepts": [
+        "EC2",
+        "S3",
+        "Lambda",
+        "IAM",
+        "auto-scaling",
+        "load balancer"
+      ],
+      "candidate_answer": "I used EC2, S3, Lambda, IAM, auto-scaling and load balancers to build a highly available recommendation platform serving millions of requests.",
+      "response_latency_sec": 2.0,
+      "answer_duration_sec": 50
+    },
+    {
+      "question_id": "Q3",
+      "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+      "skill": "Machine Learning",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+      "required_concepts": [
+        "resampling",
+        "class weight",
+        "F1",
+        "precision",
+        "recall",
+        "XGBoost"
+      ],
+      "candidate_answer": "To handle an imbalanced dataset you can use resampling techniques such as SMOTE for oversampling the minority class, apply class weighting during training, and evaluate using F1-score or precision-recall AUC rather than raw accuracy, since accuracy is misleading under class imbalance.",
+      "response_latency_sec": 8.9,
+      "answer_duration_sec": 65
+    },
+    {
+      "question_id": "Q4",
+      "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+      "skill": "AWS",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+      "required_concepts": [
+        "load balancer",
+        "auto-scaling",
+        "traffic distribution",
+        "demand"
+      ],
+      "candidate_answer": "A load balancer distributes traffic, auto-scaling changes instance count with demand.",
+      "response_latency_sec": 1.7,
+      "answer_duration_sec": 30
+    }
+  ],
+  "speech_features": [
+    {
+      "question_id": "Q1",
+      "pitch_hz": 168,
+      "loudness_db": -18,
+      "speech_rate_wpm": 126,
+      "pause_ratio": 0.15,
+      "speech_silence_ratio": 0.78
+    },
+    {
+      "question_id": "Q2",
+      "pitch_hz": 170,
+      "loudness_db": -18,
+      "speech_rate_wpm": 128,
+      "pause_ratio": 0.15,
+      "speech_silence_ratio": 0.79
+    },
+    {
+      "question_id": "Q3",
+      "pitch_hz": 152,
+      "loudness_db": -14,
+      "speech_rate_wpm": 178,
+      "pause_ratio": 0.05,
+      "speech_silence_ratio": 0.94
+    },
+    {
+      "question_id": "Q4",
+      "pitch_hz": 169,
+      "loudness_db": -18,
+      "speech_rate_wpm": 127,
+      "pause_ratio": 0.15,
+      "speech_silence_ratio": 0.78
+    }
+  ],
+  "behavior_signals": {
+    "gaze_off_screen_pct": 0.34,
+    "head_pose_variance": "elevated",
+    "multi_person_detected": false,
+    "phone_detected": false
+  },
+  "identity_signals": {
+    "min_frame_similarity_to_anchor": 0.95,
+    "face_lost_pct": 0.05
+  },
+  "av_signals": {
+    "av_offset_frames": 2,
+    "sync_confidence": 0.75
+  },
+  "counterfactuals": [
+    {
+      "skill": "Machine Learning",
+      "followup_question_id": "Q3F",
+      "perturbed_assumption": "the minority class becomes only 1% of the dataset instead of 30%",
+      "expected_new_concepts": [
+        "SMOTE",
+        "oversampling",
+        "class weight",
+        "evaluation metric change",
+        "anomaly detection framing"
+      ],
+      "expected_retained_concepts": [
+        "precision",
+        "recall",
+        "F1"
+      ],
+      "candidate_followup_answer": "Um, I think you'd still just use more data collection. I'm not sure the approach would change that much honestly."
+    }
+  ]
+}

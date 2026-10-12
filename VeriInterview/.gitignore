@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+storage/*.db
+storage/raw_audio/*
+storage/raw_video/*
+storage/reports/*
+!storage/raw_audio/.gitkeep
+!storage/raw_video/.gitkeep
+!storage/reports/.gitkeep
+.env
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/

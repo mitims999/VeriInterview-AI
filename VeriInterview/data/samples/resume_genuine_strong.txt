@@ -1,0 +1,6 @@
+Ananya Rao
+Backend Engineer
+
+Designed and deployed AWS architecture for a production recommendation system using
+EC2, S3 and Lambda. Experience with XGBoost for imbalanced classification. Familiar
+with Kubernetes.

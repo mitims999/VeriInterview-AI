@@ -1,0 +1,19 @@
+[Q1]
+answer: Overfitting is like... when the model is too specific to the data you gave it and doesn't work well on new data. I think it's related to too many parameters maybe.
+latency: 4.2
+duration: 30
+
+[Q2]
+answer: I've used EC2 a little bit for a class project. I'm not too familiar with the other services honestly.
+latency: 5.1
+duration: 25
+
+[Q3]
+answer: I would probably just get more data for the smaller class if I could. I'm not sure about other techniques.
+latency: 6.0
+duration: 28
+
+[Q4]
+answer: I think a load balancer spreads out traffic. Not sure exactly how auto-scaling is different from that.
+latency: 3.8
+duration: 20

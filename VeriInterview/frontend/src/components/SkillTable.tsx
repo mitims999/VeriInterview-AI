@@ -1,0 +1,6 @@
+import type { SkillVerdict } from "../api";
+const STYLES: Record<string, { label: string; tone: string }> = { STRONGLY_VERIFIED: { label: "Strongly verified", tone: "low" }, VERIFIED: { label: "Verified", tone: "low" }, PARTIALLY_VERIFIED: { label: "Partially verified", tone: "medium" }, WEAKLY_SUPPORTED: { label: "Limited support", tone: "medium" }, RESUME_INTERVIEW_MISMATCH: { label: "Claim needs review", tone: "high" }, NOT_ASSESSED: { label: "Not assessed", tone: "neutral" } };
+export default function SkillTable({ verdicts }: { verdicts: SkillVerdict[] }) {
+  if (!verdicts.length) return <p className="empty-state">No skills were identified for comparison.</p>;
+  return <div className="table-scroll"><table className="skill-table"><thead><tr><th>Claimed / tested skill</th><th>Interview support</th><th>Answer score</th><th>Based on</th></tr></thead><tbody>{verdicts.map(v => { const style = STYLES[v.verdict] || { label: v.verdict, tone: "neutral" }; return <tr key={v.skill}><td><strong>{v.skill}</strong></td><td><span className={`badge ${style.tone}`}>{style.label}</span></td><td>{v.verdict === "NOT_ASSESSED" ? "—" : <>{Math.round(v.evidence_score)}<span className="muted"> / 100</span></>}</td><td className="muted">{v.questions_used.join(", ") || "No questions asked"}</td></tr>; })}</tbody></table></div>;
+}

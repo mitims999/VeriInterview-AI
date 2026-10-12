@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          "frontend/src/components/UploadForm.tsx"
+        ],
+        "createdAt": "2026-08-22T09:27:32.385Z",
+        "reason": "disabled submit button state intentionally uses muted gray text on dark disabled background; not a real contrast issue for interactive text"
+      }
+    ]
+  }
+}

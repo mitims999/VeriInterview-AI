@@ -1,0 +1,1284 @@
+[
+  {
+    "id": "genuine",
+    "role": "Backend Engineer \u00b7 Python & AWS",
+    "summary": "Clear technical answers, consistent interview signals, and a thoughtful response to a changed assumption.",
+    "report": {
+      "assessment": {
+        "candidate_name": "Ananya Rao",
+        "risk_score": 10.2,
+        "risk_level": "LOW",
+        "confidence": 0.78,
+        "capability_score": 59.1,
+        "components": {
+          "identity_risk": {
+            "feature": "face_identity",
+            "score": 8.5,
+            "confidence": 0.9,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "identity_drift",
+                "severity": "low",
+                "message": "Face identity remained consistent with session anchor throughout.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.99,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "sync_risk": {
+            "feature": "av_sync",
+            "score": 10.0,
+            "confidence": 0.92,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "av_offset",
+                "severity": "low",
+                "message": "AV offset of 1 frame(s) within normal bonafide range.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.92,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "behavior_risk": {
+            "feature": "behavior",
+            "score": 3.6,
+            "confidence": 0.65,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "gaze",
+                "severity": "low",
+                "message": "Minor gaze deviation (6% of duration) \u2014 within normal range.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.9,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "speech_behavior_risk": {
+            "feature": "speech_behavior",
+            "score": 14.2,
+            "confidence": 0.8,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "speech_rate",
+                "severity": "low",
+                "message": "Speech pattern remained consistent with the candidate's own baseline.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.9,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "knowledge_ownership_risk": {
+            "feature": "knowledge_ownership",
+            "score": 20.0,
+            "confidence": 0.85,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "counterfactual",
+                "severity": "low",
+                "message": "Candidate adapted reasoning consistently when 'the minority class becomes only 1% of the dataset instead of 30%' was introduced for Machine Learning.",
+                "question_id": "Q3F",
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 1.0,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "profile_consistency_risk": {
+            "feature": "profile_consistency",
+            "score": 2.0,
+            "confidence": 0.78,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "timing",
+                "severity": "low",
+                "message": "Response latencies remained consistent throughout the interview.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 1.0,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          }
+        },
+        "evidence_timeline": [
+          {
+            "type": "identity_drift",
+            "severity": "low",
+            "message": "Face identity remained consistent with session anchor throughout.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "av_offset",
+            "severity": "low",
+            "message": "AV offset of 1 frame(s) within normal bonafide range.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "gaze",
+            "severity": "low",
+            "message": "Minor gaze deviation (6% of duration) \u2014 within normal range.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "speech_rate",
+            "severity": "low",
+            "message": "Speech pattern remained consistent with the candidate's own baseline.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "counterfactual",
+            "severity": "low",
+            "message": "Candidate adapted reasoning consistently when 'the minority class becomes only 1% of the dataset instead of 30%' was introduced for Machine Learning.",
+            "question_id": "Q3F",
+            "timestamp": null
+          },
+          {
+            "type": "timing",
+            "severity": "low",
+            "message": "Response latencies remained consistent throughout the interview.",
+            "question_id": null,
+            "timestamp": null
+          }
+        ],
+        "recommended_action": "No targeted verification required. Standard review process applies."
+      },
+      "skill_profile": {
+        "skill_match_score": 25.0,
+        "matched_keywords": [
+          "AWS",
+          "EC2",
+          "S3",
+          "XGBoost"
+        ],
+        "missing_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "class imbalance",
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "Lambda",
+          "IAM",
+          "VPC",
+          "networking",
+          "overfitting",
+          "Kubernetes"
+        ],
+        "resume_claims": [
+          {
+            "skill": "AWS",
+            "claim_text": "Designed and deployed AWS architecture for a production recommendation system.",
+            "claim_strength": "strong",
+            "source": "resume"
+          },
+          {
+            "skill": "Machine Learning",
+            "claim_text": "Experience with XGBoost for imbalanced classification.",
+            "claim_strength": "medium",
+            "source": "resume"
+          },
+          {
+            "skill": "Kubernetes",
+            "claim_text": "Familiar with Kubernetes.",
+            "claim_strength": "weak",
+            "source": "resume"
+          }
+        ]
+      },
+      "skill_verdicts": [
+        {
+          "skill": "AWS",
+          "verdict": "PARTIALLY_VERIFIED",
+          "evidence_score": 67.5,
+          "questions_used": [
+            "Q2",
+            "Q4"
+          ]
+        },
+        {
+          "skill": "Kubernetes",
+          "verdict": "NOT_ASSESSED",
+          "evidence_score": 0.0,
+          "questions_used": []
+        },
+        {
+          "skill": "Machine Learning",
+          "verdict": "PARTIALLY_VERIFIED",
+          "evidence_score": 58.5,
+          "questions_used": [
+            "Q1",
+            "Q3"
+          ]
+        }
+      ],
+      "answer_evaluations": [
+        {
+          "question_id": "Q1",
+          "score": 60.3,
+          "concept_coverage": 0.6,
+          "missing_concepts": [
+            "generalization",
+            "unseen data"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q2",
+          "score": 64.1,
+          "concept_coverage": 1.0,
+          "missing_concepts": [],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q3",
+          "score": 56.8,
+          "concept_coverage": 0.67,
+          "missing_concepts": [
+            "precision",
+            "recall"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q4",
+          "score": 71.0,
+          "concept_coverage": 0.75,
+          "missing_concepts": [
+            "traffic distribution"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        }
+      ],
+      "buzzword_coverage": {
+        "buzzword_coverage_score": 50.0,
+        "expected_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "class imbalance",
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "AWS",
+          "EC2",
+          "S3",
+          "Lambda",
+          "IAM",
+          "VPC",
+          "networking",
+          "overfitting",
+          "XGBoost",
+          "Kubernetes"
+        ],
+        "used_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "EC2",
+          "S3",
+          "Lambda",
+          "IAM",
+          "overfitting",
+          "XGBoost"
+        ],
+        "missing_keywords": [
+          "class imbalance",
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "AWS",
+          "VPC",
+          "networking",
+          "Kubernetes"
+        ],
+        "evidence": [
+          "Candidate used 8 of 16 role-critical terms across all answers."
+        ]
+      },
+      "qa_list": [
+        {
+          "question_id": "Q1",
+          "question_text": "What is overfitting in machine learning and how do you detect it?",
+          "skill": "Machine Learning",
+          "difficulty": "Basic",
+          "expected_proficiency": "Intermediate",
+          "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+          "required_concepts": [
+            "training data",
+            "noise",
+            "generalization",
+            "unseen data",
+            "validation"
+          ],
+          "candidate_answer": "Overfitting happens when a model memorizes the training data, including its noise, so it performs great on training data but poorly on unseen validation or test data. You usually catch it by watching the gap between training and validation loss.",
+          "response_latency_sec": 1.8,
+          "answer_duration_sec": 40.0
+        },
+        {
+          "question_id": "Q2",
+          "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+          "skill": "AWS",
+          "difficulty": "Intermediate",
+          "expected_proficiency": "Advanced",
+          "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+          "required_concepts": [
+            "EC2",
+            "S3",
+            "Lambda",
+            "IAM",
+            "auto-scaling",
+            "load balancer"
+          ],
+          "candidate_answer": "I deployed the recommendation service on EC2 behind a load balancer, used auto-scaling to handle traffic spikes, stored artifacts in S3, ran event-driven feature updates with Lambda, and scoped access with IAM roles per service.",
+          "response_latency_sec": 2.1,
+          "answer_duration_sec": 55.0
+        },
+        {
+          "question_id": "Q3",
+          "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+          "skill": "Machine Learning",
+          "difficulty": "Intermediate",
+          "expected_proficiency": "Advanced",
+          "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+          "required_concepts": [
+            "resampling",
+            "class weight",
+            "F1",
+            "precision",
+            "recall",
+            "XGBoost"
+          ],
+          "candidate_answer": "I'd use resampling \u2014 oversampling the minority class or undersampling the majority \u2014 and switch to class weighting in the loss. I'd also stop trusting accuracy and use F1 or PR-AUC instead. XGBoost's scale_pos_weight handles this natively.",
+          "response_latency_sec": 2.4,
+          "answer_duration_sec": 60.0
+        },
+        {
+          "question_id": "Q4",
+          "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+          "skill": "AWS",
+          "difficulty": "Basic",
+          "expected_proficiency": "Intermediate",
+          "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+          "required_concepts": [
+            "load balancer",
+            "auto-scaling",
+            "traffic distribution",
+            "demand"
+          ],
+          "candidate_answer": "A load balancer distributes incoming traffic across healthy instances, while an auto-scaling group changes the number of instances based on demand.",
+          "response_latency_sec": 1.9,
+          "answer_duration_sec": 38.0
+        }
+      ],
+      "scenario_label": "Genuine Strong",
+      "expected_outcome": "LOW risk, HIGH confidence, strong skill verification, normal behavior."
+    }
+  },
+  {
+    "id": "genuine_weak",
+    "role": "Junior Backend Engineer",
+    "summary": "An honest conversation with developing technical skills. Low capability is kept separate from integrity risk.",
+    "report": {
+      "assessment": {
+        "candidate_name": "Rohit Mehta",
+        "risk_score": 10.9,
+        "risk_level": "LOW",
+        "confidence": 0.78,
+        "capability_score": 18.2,
+        "components": {
+          "identity_risk": {
+            "feature": "face_identity",
+            "score": 13.0,
+            "confidence": 0.9,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "identity_drift",
+                "severity": "low",
+                "message": "Face identity remained consistent with session anchor throughout.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.98,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "sync_risk": {
+            "feature": "av_sync",
+            "score": 10.0,
+            "confidence": 0.88,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "av_offset",
+                "severity": "low",
+                "message": "AV offset of 1 frame(s) within normal bonafide range.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.88,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "behavior_risk": {
+            "feature": "behavior",
+            "score": 6.0,
+            "confidence": 0.65,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "gaze",
+                "severity": "low",
+                "message": "Minor gaze deviation (10% of duration) \u2014 within normal range.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.9,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "speech_behavior_risk": {
+            "feature": "speech_behavior",
+            "score": 17.0,
+            "confidence": 0.8,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "speech_rate",
+                "severity": "low",
+                "message": "Speech pattern remained consistent with the candidate's own baseline.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.9,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "knowledge_ownership_risk": {
+            "feature": "knowledge_ownership",
+            "score": 15.0,
+            "confidence": 0.85,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "counterfactual",
+                "severity": "low",
+                "message": "Candidate's original answer on Machine Learning was already weak; follow-up consistency is not treated as an integrity signal.",
+                "question_id": "Q3F",
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 1.0,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "profile_consistency_risk": {
+            "feature": "profile_consistency",
+            "score": 2.0,
+            "confidence": 0.78,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "skill_mismatch",
+                "severity": "medium",
+                "message": "AWS: resume claim not supported by interview performance (verdict: WEAKLY_SUPPORTED).",
+                "question_id": null,
+                "timestamp": null
+              },
+              {
+                "type": "skill_mismatch",
+                "severity": "medium",
+                "message": "Machine Learning: resume claim not supported by interview performance (verdict: WEAKLY_SUPPORTED).",
+                "question_id": null,
+                "timestamp": null
+              },
+              {
+                "type": "timing",
+                "severity": "low",
+                "message": "Response latencies remained consistent throughout the interview.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 1.0,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          }
+        },
+        "evidence_timeline": [
+          {
+            "type": "identity_drift",
+            "severity": "low",
+            "message": "Face identity remained consistent with session anchor throughout.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "av_offset",
+            "severity": "low",
+            "message": "AV offset of 1 frame(s) within normal bonafide range.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "gaze",
+            "severity": "low",
+            "message": "Minor gaze deviation (10% of duration) \u2014 within normal range.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "speech_rate",
+            "severity": "low",
+            "message": "Speech pattern remained consistent with the candidate's own baseline.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "counterfactual",
+            "severity": "low",
+            "message": "Candidate's original answer on Machine Learning was already weak; follow-up consistency is not treated as an integrity signal.",
+            "question_id": "Q3F",
+            "timestamp": null
+          },
+          {
+            "type": "skill_mismatch",
+            "severity": "medium",
+            "message": "AWS: resume claim not supported by interview performance (verdict: WEAKLY_SUPPORTED).",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "skill_mismatch",
+            "severity": "medium",
+            "message": "Machine Learning: resume claim not supported by interview performance (verdict: WEAKLY_SUPPORTED).",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "timing",
+            "severity": "low",
+            "message": "Response latencies remained consistent throughout the interview.",
+            "question_id": null,
+            "timestamp": null
+          }
+        ],
+        "recommended_action": "No targeted verification required. Standard review process applies."
+      },
+      "skill_profile": {
+        "skill_match_score": 6.2,
+        "matched_keywords": [
+          "machine learning"
+        ],
+        "missing_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "class imbalance",
+          "model evaluation",
+          "Python",
+          "AWS",
+          "EC2",
+          "S3",
+          "Lambda",
+          "IAM",
+          "VPC",
+          "networking",
+          "overfitting",
+          "XGBoost",
+          "Kubernetes"
+        ],
+        "resume_claims": [
+          {
+            "skill": "AWS",
+            "claim_text": "Familiar with AWS.",
+            "claim_strength": "weak",
+            "source": "resume"
+          },
+          {
+            "skill": "Machine Learning",
+            "claim_text": "Some exposure to machine learning through coursework.",
+            "claim_strength": "weak",
+            "source": "resume"
+          }
+        ]
+      },
+      "skill_verdicts": [
+        {
+          "skill": "AWS",
+          "verdict": "WEAKLY_SUPPORTED",
+          "evidence_score": 23.5,
+          "questions_used": [
+            "Q2",
+            "Q4"
+          ]
+        },
+        {
+          "skill": "Machine Learning",
+          "verdict": "WEAKLY_SUPPORTED",
+          "evidence_score": 7.0,
+          "questions_used": [
+            "Q1",
+            "Q3"
+          ]
+        }
+      ],
+      "answer_evaluations": [
+        {
+          "question_id": "Q1",
+          "score": 9.4,
+          "concept_coverage": 0.0,
+          "missing_concepts": [
+            "training data",
+            "noise",
+            "generalization",
+            "unseen data",
+            "validation"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q2",
+          "score": 10.2,
+          "concept_coverage": 0.17,
+          "missing_concepts": [
+            "S3",
+            "Lambda",
+            "IAM",
+            "auto-scaling",
+            "load balancer"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q3",
+          "score": 4.6,
+          "concept_coverage": 0.0,
+          "missing_concepts": [
+            "resampling",
+            "class weight",
+            "F1",
+            "precision",
+            "recall",
+            "XGBoost"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q4",
+          "score": 36.7,
+          "concept_coverage": 0.5,
+          "missing_concepts": [
+            "traffic distribution",
+            "demand"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        }
+      ],
+      "buzzword_coverage": {
+        "buzzword_coverage_score": 25.0,
+        "expected_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "class imbalance",
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "AWS",
+          "EC2",
+          "S3",
+          "Lambda",
+          "IAM",
+          "VPC",
+          "networking",
+          "overfitting",
+          "XGBoost",
+          "Kubernetes"
+        ],
+        "used_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "EC2",
+          "overfitting"
+        ],
+        "missing_keywords": [
+          "class imbalance",
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "AWS",
+          "S3",
+          "Lambda",
+          "IAM",
+          "VPC",
+          "networking",
+          "XGBoost",
+          "Kubernetes"
+        ],
+        "evidence": [
+          "Candidate used 4 of 16 role-critical terms across all answers."
+        ]
+      },
+      "qa_list": [
+        {
+          "question_id": "Q1",
+          "question_text": "What is overfitting in machine learning and how do you detect it?",
+          "skill": "Machine Learning",
+          "difficulty": "Basic",
+          "expected_proficiency": "Intermediate",
+          "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+          "required_concepts": [
+            "training data",
+            "noise",
+            "generalization",
+            "unseen data",
+            "validation"
+          ],
+          "candidate_answer": "Overfitting is like... when the model is too specific to the data you gave it and doesn't work well on new data. I think it's related to too many parameters maybe.",
+          "response_latency_sec": 4.2,
+          "answer_duration_sec": 30.0
+        },
+        {
+          "question_id": "Q2",
+          "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+          "skill": "AWS",
+          "difficulty": "Intermediate",
+          "expected_proficiency": "Advanced",
+          "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+          "required_concepts": [
+            "EC2",
+            "S3",
+            "Lambda",
+            "IAM",
+            "auto-scaling",
+            "load balancer"
+          ],
+          "candidate_answer": "I've used EC2 a little bit for a class project. I'm not too familiar with the other services honestly.",
+          "response_latency_sec": 5.1,
+          "answer_duration_sec": 25.0
+        },
+        {
+          "question_id": "Q3",
+          "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+          "skill": "Machine Learning",
+          "difficulty": "Intermediate",
+          "expected_proficiency": "Advanced",
+          "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+          "required_concepts": [
+            "resampling",
+            "class weight",
+            "F1",
+            "precision",
+            "recall",
+            "XGBoost"
+          ],
+          "candidate_answer": "I would probably just get more data for the smaller class if I could. I'm not sure about other techniques.",
+          "response_latency_sec": 6.0,
+          "answer_duration_sec": 28.0
+        },
+        {
+          "question_id": "Q4",
+          "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+          "skill": "AWS",
+          "difficulty": "Basic",
+          "expected_proficiency": "Intermediate",
+          "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+          "required_concepts": [
+            "load balancer",
+            "auto-scaling",
+            "traffic distribution",
+            "demand"
+          ],
+          "candidate_answer": "I think a load balancer spreads out traffic. Not sure exactly how auto-scaling is different from that.",
+          "response_latency_sec": 3.8,
+          "answer_duration_sec": 20.0
+        }
+      ],
+      "scenario_label": "Genuine Weak",
+      "expected_outcome": "LOW integrity risk, LOW capability score, no false cheating accusation."
+    }
+  },
+  {
+    "id": "ai_assisted",
+    "role": "Backend Engineer \u00b7 Python & AWS",
+    "summary": "Polished initial answers followed by a difficult follow-up, with simulated speech and gaze observations to review.",
+    "report": {
+      "assessment": {
+        "candidate_name": "Karan Verma",
+        "risk_score": 51.2,
+        "risk_level": "MEDIUM",
+        "confidence": 0.76,
+        "capability_score": 58.3,
+        "components": {
+          "identity_risk": {
+            "feature": "face_identity",
+            "score": 22.5,
+            "confidence": 0.9,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "identity_drift",
+                "severity": "medium",
+                "message": "Minor face embedding drift observed (min similarity 0.95).",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.95,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "sync_risk": {
+            "feature": "av_sync",
+            "score": 15.0,
+            "confidence": 0.75,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "av_offset",
+                "severity": "low",
+                "message": "AV offset of 2 frame(s) within normal bonafide range.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.75,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "behavior_risk": {
+            "feature": "behavior",
+            "score": 35.4,
+            "confidence": 0.65,
+            "level": "MEDIUM",
+            "evidence": [
+              {
+                "type": "gaze",
+                "severity": "medium",
+                "message": "Gaze remained off-center for 34% of answer duration.",
+                "question_id": null,
+                "timestamp": null
+              },
+              {
+                "type": "head_pose",
+                "severity": "medium",
+                "message": "Head-pose variance classified as elevated.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.9,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "speech_behavior_risk": {
+            "feature": "speech_behavior",
+            "score": 80.9,
+            "confidence": 0.8,
+            "level": "HIGH",
+            "evidence": [
+              {
+                "type": "speech_rate",
+                "severity": "high",
+                "message": "Speech pattern deviated significantly from candidate baseline on Q3 (rate/pause/pitch combined deviation z~=4.0).",
+                "question_id": "Q3",
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 0.9,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "knowledge_ownership_risk": {
+            "feature": "knowledge_ownership",
+            "score": 100.0,
+            "confidence": 0.85,
+            "level": "HIGH",
+            "evidence": [
+              {
+                "type": "counterfactual",
+                "severity": "high",
+                "message": "Candidate gave a strong original answer on Machine Learning but could not adapt reasoning after 'the minority class becomes only 1% of the dataset instead of 30%' \u2014 suggests the original answer may not reflect genuine ownership of the concept.",
+                "question_id": "Q3F",
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 1.0,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          },
+          "profile_consistency_risk": {
+            "feature": "profile_consistency",
+            "score": 2.0,
+            "confidence": 0.78,
+            "level": "LOW",
+            "evidence": [
+              {
+                "type": "timing",
+                "severity": "low",
+                "message": "Response latencies remained consistent throughout the interview.",
+                "question_id": null,
+                "timestamp": null
+              }
+            ],
+            "quality": {
+              "data_quality": 1.0,
+              "baseline_sufficient": true
+            },
+            "status": "OK"
+          }
+        },
+        "evidence_timeline": [
+          {
+            "type": "identity_drift",
+            "severity": "medium",
+            "message": "Minor face embedding drift observed (min similarity 0.95).",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "av_offset",
+            "severity": "low",
+            "message": "AV offset of 2 frame(s) within normal bonafide range.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "gaze",
+            "severity": "medium",
+            "message": "Gaze remained off-center for 34% of answer duration.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "head_pose",
+            "severity": "medium",
+            "message": "Head-pose variance classified as elevated.",
+            "question_id": null,
+            "timestamp": null
+          },
+          {
+            "type": "speech_rate",
+            "severity": "high",
+            "message": "Speech pattern deviated significantly from candidate baseline on Q3 (rate/pause/pitch combined deviation z~=4.0).",
+            "question_id": "Q3",
+            "timestamp": null
+          },
+          {
+            "type": "counterfactual",
+            "severity": "high",
+            "message": "Candidate gave a strong original answer on Machine Learning but could not adapt reasoning after 'the minority class becomes only 1% of the dataset instead of 30%' \u2014 suggests the original answer may not reflect genuine ownership of the concept.",
+            "question_id": "Q3F",
+            "timestamp": null
+          },
+          {
+            "type": "timing",
+            "severity": "low",
+            "message": "Response latencies remained consistent throughout the interview.",
+            "question_id": null,
+            "timestamp": null
+          }
+        ],
+        "recommended_action": "Review flagged evidence with the interviewer before proceeding; consider one targeted follow-up question."
+      },
+      "skill_profile": {
+        "skill_match_score": 12.5,
+        "matched_keywords": [
+          "AWS",
+          "XGBoost"
+        ],
+        "missing_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "class imbalance",
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "EC2",
+          "S3",
+          "Lambda",
+          "IAM",
+          "VPC",
+          "networking",
+          "overfitting",
+          "Kubernetes"
+        ],
+        "resume_claims": [
+          {
+            "skill": "AWS",
+            "claim_text": "Designed and deployed AWS architecture at scale.",
+            "claim_strength": "strong",
+            "source": "resume"
+          },
+          {
+            "skill": "Kubernetes",
+            "claim_text": "Led migration to Kubernetes.",
+            "claim_strength": "strong",
+            "source": "resume"
+          },
+          {
+            "skill": "Machine Learning",
+            "claim_text": "Deep experience with XGBoost and imbalanced classification in production.",
+            "claim_strength": "strong",
+            "source": "resume"
+          }
+        ]
+      },
+      "skill_verdicts": [
+        {
+          "skill": "AWS",
+          "verdict": "PARTIALLY_VERIFIED",
+          "evidence_score": 60.1,
+          "questions_used": [
+            "Q2",
+            "Q4"
+          ]
+        },
+        {
+          "skill": "Kubernetes",
+          "verdict": "NOT_ASSESSED",
+          "evidence_score": 0.0,
+          "questions_used": []
+        },
+        {
+          "skill": "Machine Learning",
+          "verdict": "PARTIALLY_VERIFIED",
+          "evidence_score": 63.6,
+          "questions_used": [
+            "Q1",
+            "Q3"
+          ]
+        }
+      ],
+      "answer_evaluations": [
+        {
+          "question_id": "Q1",
+          "score": 69.1,
+          "concept_coverage": 0.6,
+          "missing_concepts": [
+            "generalization",
+            "validation"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q2",
+          "score": 64.4,
+          "concept_coverage": 1.0,
+          "missing_concepts": [],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q3",
+          "score": 58.2,
+          "concept_coverage": 0.83,
+          "missing_concepts": [
+            "XGBoost"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        },
+        {
+          "question_id": "Q4",
+          "score": 55.7,
+          "concept_coverage": 0.75,
+          "missing_concepts": [
+            "traffic distribution"
+          ],
+          "incorrect_concepts": [],
+          "confidence": 0.9
+        }
+      ],
+      "buzzword_coverage": {
+        "buzzword_coverage_score": 50.0,
+        "expected_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "class imbalance",
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "AWS",
+          "EC2",
+          "S3",
+          "Lambda",
+          "IAM",
+          "VPC",
+          "networking",
+          "overfitting",
+          "XGBoost",
+          "Kubernetes"
+        ],
+        "used_keywords": [
+          "auto-scaling",
+          "load balancer",
+          "class imbalance",
+          "EC2",
+          "S3",
+          "Lambda",
+          "IAM",
+          "overfitting"
+        ],
+        "missing_keywords": [
+          "machine learning",
+          "model evaluation",
+          "Python",
+          "AWS",
+          "VPC",
+          "networking",
+          "XGBoost",
+          "Kubernetes"
+        ],
+        "evidence": [
+          "Candidate used 8 of 16 role-critical terms across all answers."
+        ]
+      },
+      "qa_list": [
+        {
+          "question_id": "Q1",
+          "question_text": "What is overfitting in machine learning and how do you detect it?",
+          "skill": "Machine Learning",
+          "difficulty": "Basic",
+          "expected_proficiency": "Intermediate",
+          "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+          "required_concepts": [
+            "training data",
+            "noise",
+            "generalization",
+            "unseen data",
+            "validation"
+          ],
+          "candidate_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data.",
+          "response_latency_sec": 1.6,
+          "answer_duration_sec": 42.0
+        },
+        {
+          "question_id": "Q2",
+          "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+          "skill": "AWS",
+          "difficulty": "Intermediate",
+          "expected_proficiency": "Advanced",
+          "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+          "required_concepts": [
+            "EC2",
+            "S3",
+            "Lambda",
+            "IAM",
+            "auto-scaling",
+            "load balancer"
+          ],
+          "candidate_answer": "I used EC2, S3, Lambda, IAM, auto-scaling and load balancers to build a highly available recommendation platform serving millions of requests.",
+          "response_latency_sec": 2.0,
+          "answer_duration_sec": 50.0
+        },
+        {
+          "question_id": "Q3",
+          "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+          "skill": "Machine Learning",
+          "difficulty": "Intermediate",
+          "expected_proficiency": "Advanced",
+          "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+          "required_concepts": [
+            "resampling",
+            "class weight",
+            "F1",
+            "precision",
+            "recall",
+            "XGBoost"
+          ],
+          "candidate_answer": "To handle an imbalanced dataset you can use resampling techniques such as SMOTE for oversampling the minority class, apply class weighting during training, and evaluate using F1-score or precision-recall AUC rather than raw accuracy, since accuracy is misleading under class imbalance.",
+          "response_latency_sec": 8.9,
+          "answer_duration_sec": 65.0
+        },
+        {
+          "question_id": "Q4",
+          "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+          "skill": "AWS",
+          "difficulty": "Basic",
+          "expected_proficiency": "Intermediate",
+          "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+          "required_concepts": [
+            "load balancer",
+            "auto-scaling",
+            "traffic distribution",
+            "demand"
+          ],
+          "candidate_answer": "A load balancer distributes traffic, auto-scaling changes instance count with demand.",
+          "response_latency_sec": 1.7,
+          "answer_duration_sec": 30.0
+        }
+      ],
+      "scenario_label": "AI-assisted Simulation",
+      "expected_outcome": "MEDIUM/HIGH integrity risk: resume/answer mismatch, latency anomalies, behavior anomalies."
+    }
+  }
+]

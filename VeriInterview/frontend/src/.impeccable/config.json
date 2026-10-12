@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          "frontend/src/App.tsx"
+        ],
+        "createdAt": "2026-08-22T09:28:29.184Z",
+        "reason": "inactive tab-toggle buttons intentionally use muted gray text on dark (non-colored) background to signal unselected state; active state uses white-on-sky-600"
+      }
+    ]
+  }
+}

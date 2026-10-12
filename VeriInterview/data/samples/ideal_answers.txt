@@ -1,0 +1,31 @@
+[Q1]
+skill: Machine Learning
+difficulty: Basic
+expected_proficiency: Intermediate
+question: What is overfitting in machine learning and how do you detect it?
+reference_answer: Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.
+concepts: training data, noise, generalization, unseen data, validation
+
+[Q2]
+skill: AWS
+difficulty: Intermediate
+expected_proficiency: Advanced
+question: Describe how you deployed a system on AWS. What services did you use?
+reference_answer: A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.
+concepts: EC2, S3, Lambda, IAM, auto-scaling, load balancer
+
+[Q3]
+skill: Machine Learning
+difficulty: Intermediate
+expected_proficiency: Advanced
+question: How would you handle an imbalanced dataset when training a classifier?
+reference_answer: Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.
+concepts: resampling, class weight, F1, precision, recall, XGBoost
+
+[Q4]
+skill: AWS
+difficulty: Basic
+expected_proficiency: Intermediate
+question: What is the difference between a load balancer and auto-scaling group on AWS?
+reference_answer: A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.
+concepts: load balancer, auto-scaling, traffic distribution, demand

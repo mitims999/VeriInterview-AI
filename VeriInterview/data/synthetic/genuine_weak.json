@@ -1,0 +1,162 @@
+{
+  "candidate_name": "Rohit Mehta",
+  "scenario_label": "Genuine Weak",
+  "expected_outcome": "LOW integrity risk, LOW capability score, no false cheating accusation.",
+  "job_description": "We are hiring a Backend Engineer with strong Python skills and hands-on AWS experience. The ideal candidate has designed and deployed production systems on EC2, S3, and Lambda, understands IAM and VPC networking, has used auto-scaling and load balancer configurations, and is comfortable with machine learning concepts such as overfitting, class imbalance, and model evaluation using XGBoost or similar techniques. Kubernetes experience is a plus.",
+  "resume_text": "Familiar with AWS. Some exposure to machine learning through coursework.",
+  "resume_claims": [
+    {
+      "skill": "AWS",
+      "claim_text": "Familiar with AWS.",
+      "claim_strength": "weak"
+    },
+    {
+      "skill": "Machine Learning",
+      "claim_text": "Some exposure to machine learning through coursework.",
+      "claim_strength": "weak"
+    }
+  ],
+  "qa_list": [
+    {
+      "question_id": "Q1",
+      "question_text": "What is overfitting in machine learning and how do you detect it?",
+      "skill": "Machine Learning",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+      "required_concepts": [
+        "training data",
+        "noise",
+        "generalization",
+        "unseen data",
+        "validation"
+      ],
+      "candidate_answer": "Overfitting is like... when the model is too specific to the data you gave it and doesn't work well on new data. I think it's related to too many parameters maybe.",
+      "response_latency_sec": 4.2,
+      "answer_duration_sec": 30
+    },
+    {
+      "question_id": "Q2",
+      "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+      "skill": "AWS",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+      "required_concepts": [
+        "EC2",
+        "S3",
+        "Lambda",
+        "IAM",
+        "auto-scaling",
+        "load balancer"
+      ],
+      "candidate_answer": "I've used EC2 a little bit for a class project. I'm not too familiar with the other services honestly.",
+      "response_latency_sec": 5.1,
+      "answer_duration_sec": 25
+    },
+    {
+      "question_id": "Q3",
+      "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+      "skill": "Machine Learning",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+      "required_concepts": [
+        "resampling",
+        "class weight",
+        "F1",
+        "precision",
+        "recall",
+        "XGBoost"
+      ],
+      "candidate_answer": "I would probably just get more data for the smaller class if I could. I'm not sure about other techniques.",
+      "response_latency_sec": 6.0,
+      "answer_duration_sec": 28
+    },
+    {
+      "question_id": "Q4",
+      "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+      "skill": "AWS",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+      "required_concepts": [
+        "load balancer",
+        "auto-scaling",
+        "traffic distribution",
+        "demand"
+      ],
+      "candidate_answer": "I think a load balancer spreads out traffic. Not sure exactly how auto-scaling is different from that.",
+      "response_latency_sec": 3.8,
+      "answer_duration_sec": 20
+    }
+  ],
+  "speech_features": [
+    {
+      "question_id": "Q1",
+      "pitch_hz": 160,
+      "loudness_db": -20,
+      "speech_rate_wpm": 110,
+      "pause_ratio": 0.22,
+      "speech_silence_ratio": 0.7
+    },
+    {
+      "question_id": "Q2",
+      "pitch_hz": 162,
+      "loudness_db": -21,
+      "speech_rate_wpm": 108,
+      "pause_ratio": 0.24,
+      "speech_silence_ratio": 0.69
+    },
+    {
+      "question_id": "Q3",
+      "pitch_hz": 159,
+      "loudness_db": -20,
+      "speech_rate_wpm": 105,
+      "pause_ratio": 0.25,
+      "speech_silence_ratio": 0.68
+    },
+    {
+      "question_id": "Q4",
+      "pitch_hz": 161,
+      "loudness_db": -20,
+      "speech_rate_wpm": 112,
+      "pause_ratio": 0.21,
+      "speech_silence_ratio": 0.71
+    }
+  ],
+  "behavior_signals": {
+    "gaze_off_screen_pct": 0.1,
+    "head_pose_variance": "normal",
+    "multi_person_detected": false,
+    "phone_detected": false
+  },
+  "identity_signals": {
+    "min_frame_similarity_to_anchor": 0.97,
+    "face_lost_pct": 0.02
+  },
+  "av_signals": {
+    "av_offset_frames": 1,
+    "sync_confidence": 0.88
+  },
+  "counterfactuals": [
+    {
+      "skill": "Machine Learning",
+      "followup_question_id": "Q3F",
+      "perturbed_assumption": "the minority class becomes only 1% of the dataset instead of 30%",
+      "expected_new_concepts": [
+        "SMOTE",
+        "oversampling",
+        "class weight",
+        "evaluation metric change",
+        "anomaly detection framing"
+      ],
+      "expected_retained_concepts": [
+        "precision",
+        "recall",
+        "F1"
+      ],
+      "candidate_followup_answer": "I guess I'd still just try to get more data. I'm not sure what else would change if it was that extreme."
+    }
+  ]
+}

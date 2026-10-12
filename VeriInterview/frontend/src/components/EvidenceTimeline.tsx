@@ -1,0 +1,8 @@
+import { useState } from "react";
+import type { Evidence } from "../api";
+export default function EvidenceTimeline({ evidence }: { evidence: Evidence[] }) {
+  const [filter, setFilter] = useState<"all" | "flagged">("flagged");
+  const flagged = evidence.filter(e => e.severity !== "low");
+  const shown = filter === "flagged" ? flagged : evidence;
+  return <><div className="evidence-toolbar"><div className="segmented-control" aria-label="Filter evidence"><button aria-pressed={filter === "flagged"} className={filter === "flagged" ? "selected" : ""} onClick={() => setFilter("flagged")}>Needs attention <span>{flagged.length}</span></button><button aria-pressed={filter === "all"} className={filter === "all" ? "selected" : ""} onClick={() => setFilter("all")}>All observations <span>{evidence.length}</span></button></div></div>{!shown.length ? <div className="empty-state">{filter === "flagged" ? "No observations were flagged for attention. You can still review all observations." : "No observations were recorded."}</div> : <ol className="evidence-list">{shown.map((e, i) => <li key={i}><span className={`evidence-marker ${e.severity}`}/><div><div className="evidence-label"><span>{e.type.replaceAll("_", " ")}</span>{e.question_id && <span className="question-tag">{e.question_id}</span>}{e.timestamp != null && <time>{Math.floor(e.timestamp / 60)}:{String(Math.floor(e.timestamp % 60)).padStart(2, "0")}</time>}</div><p>{e.message}</p></div><span className={`evidence-severity ${e.severity}`}>{e.severity === "high" ? "Review" : e.severity === "medium" ? "Context" : "Observation"}</span></li>)}</ol>}</>;
+}

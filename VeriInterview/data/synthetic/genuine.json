@@ -1,0 +1,167 @@
+{
+  "candidate_name": "Ananya Rao",
+  "scenario_label": "Genuine Strong",
+  "expected_outcome": "LOW risk, HIGH confidence, strong skill verification, normal behavior.",
+  "job_description": "We are hiring a Backend Engineer with strong Python skills and hands-on AWS experience. The ideal candidate has designed and deployed production systems on EC2, S3, and Lambda, understands IAM and VPC networking, has used auto-scaling and load balancer configurations, and is comfortable with machine learning concepts such as overfitting, class imbalance, and model evaluation using XGBoost or similar techniques. Kubernetes experience is a plus.",
+  "resume_text": "Designed and deployed AWS architecture for a production recommendation system using EC2, S3 and Lambda. Experience with XGBoost for imbalanced classification. Familiar with Kubernetes.",
+  "resume_claims": [
+    {
+      "skill": "AWS",
+      "claim_text": "Designed and deployed AWS architecture for a production recommendation system.",
+      "claim_strength": "strong"
+    },
+    {
+      "skill": "Machine Learning",
+      "claim_text": "Experience with XGBoost for imbalanced classification.",
+      "claim_strength": "medium"
+    },
+    {
+      "skill": "Kubernetes",
+      "claim_text": "Familiar with Kubernetes.",
+      "claim_strength": "weak"
+    }
+  ],
+  "qa_list": [
+    {
+      "question_id": "Q1",
+      "question_text": "What is overfitting in machine learning and how do you detect it?",
+      "skill": "Machine Learning",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "Overfitting occurs when a model learns the training data too closely, including noise, and therefore generalizes poorly to unseen data. It can be detected via a gap between training and validation/test performance.",
+      "required_concepts": [
+        "training data",
+        "noise",
+        "generalization",
+        "unseen data",
+        "validation"
+      ],
+      "candidate_answer": "Overfitting happens when a model memorizes the training data, including its noise, so it performs great on training data but poorly on unseen validation or test data. You usually catch it by watching the gap between training and validation loss.",
+      "response_latency_sec": 1.8,
+      "answer_duration_sec": 40
+    },
+    {
+      "question_id": "Q2",
+      "question_text": "Describe how you deployed a system on AWS. What services did you use?",
+      "skill": "AWS",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "A strong answer describes EC2 for compute, S3 for storage, Lambda for event-driven functions, IAM for access control, and auto-scaling/load balancers for reliability.",
+      "required_concepts": [
+        "EC2",
+        "S3",
+        "Lambda",
+        "IAM",
+        "auto-scaling",
+        "load balancer"
+      ],
+      "candidate_answer": "I deployed the recommendation service on EC2 behind a load balancer, used auto-scaling to handle traffic spikes, stored artifacts in S3, ran event-driven feature updates with Lambda, and scoped access with IAM roles per service.",
+      "response_latency_sec": 2.1,
+      "answer_duration_sec": 55
+    },
+    {
+      "question_id": "Q3",
+      "question_text": "How would you handle an imbalanced dataset when training a classifier?",
+      "skill": "Machine Learning",
+      "difficulty": "Intermediate",
+      "expected_proficiency": "Advanced",
+      "reference_answer": "Techniques include resampling (oversampling minority/undersampling majority), class weighting, using appropriate metrics like F1 or PR-AUC instead of accuracy, and algorithms such as XGBoost with scale_pos_weight.",
+      "required_concepts": [
+        "resampling",
+        "class weight",
+        "F1",
+        "precision",
+        "recall",
+        "XGBoost"
+      ],
+      "candidate_answer": "I'd use resampling \u2014 oversampling the minority class or undersampling the majority \u2014 and switch to class weighting in the loss. I'd also stop trusting accuracy and use F1 or PR-AUC instead. XGBoost's scale_pos_weight handles this natively.",
+      "response_latency_sec": 2.4,
+      "answer_duration_sec": 60
+    },
+    {
+      "question_id": "Q4",
+      "question_text": "What is the difference between a load balancer and auto-scaling group on AWS?",
+      "skill": "AWS",
+      "difficulty": "Basic",
+      "expected_proficiency": "Intermediate",
+      "reference_answer": "A load balancer distributes incoming traffic across multiple instances, while an auto-scaling group automatically adds or removes instances based on demand.",
+      "required_concepts": [
+        "load balancer",
+        "auto-scaling",
+        "traffic distribution",
+        "demand"
+      ],
+      "candidate_answer": "A load balancer distributes incoming traffic across healthy instances, while an auto-scaling group changes the number of instances based on demand.",
+      "response_latency_sec": 1.9,
+      "answer_duration_sec": 38
+    }
+  ],
+  "speech_features": [
+    {
+      "question_id": "Q1",
+      "pitch_hz": 172,
+      "loudness_db": -18,
+      "speech_rate_wpm": 128,
+      "pause_ratio": 0.14,
+      "speech_silence_ratio": 0.78
+    },
+    {
+      "question_id": "Q2",
+      "pitch_hz": 175,
+      "loudness_db": -17,
+      "speech_rate_wpm": 132,
+      "pause_ratio": 0.15,
+      "speech_silence_ratio": 0.8
+    },
+    {
+      "question_id": "Q3",
+      "pitch_hz": 170,
+      "loudness_db": -18,
+      "speech_rate_wpm": 125,
+      "pause_ratio": 0.16,
+      "speech_silence_ratio": 0.77
+    },
+    {
+      "question_id": "Q4",
+      "pitch_hz": 174,
+      "loudness_db": -18,
+      "speech_rate_wpm": 130,
+      "pause_ratio": 0.14,
+      "speech_silence_ratio": 0.79
+    }
+  ],
+  "behavior_signals": {
+    "gaze_off_screen_pct": 0.06,
+    "head_pose_variance": "normal",
+    "multi_person_detected": false,
+    "phone_detected": false
+  },
+  "identity_signals": {
+    "min_frame_similarity_to_anchor": 0.98,
+    "face_lost_pct": 0.01
+  },
+  "av_signals": {
+    "av_offset_frames": 1,
+    "sync_confidence": 0.92
+  },
+  "counterfactuals": [
+    {
+      "skill": "Machine Learning",
+      "followup_question_id": "Q3F",
+      "perturbed_assumption": "the minority class becomes only 1% of the dataset instead of 30%",
+      "expected_new_concepts": [
+        "SMOTE",
+        "oversampling",
+        "class weight",
+        "evaluation metric change",
+        "anomaly detection framing"
+      ],
+      "expected_retained_concepts": [
+        "precision",
+        "recall",
+        "F1"
+      ],
+      "candidate_followup_answer": "At 1% minority class it's more like anomaly detection than classification \u2014 I'd lean on SMOTE or targeted oversampling, push class weighting further, and swap the evaluation metric to precision/recall or PR-AUC since F1 alone gets unstable at that skew."
+    }
+  ]
+}

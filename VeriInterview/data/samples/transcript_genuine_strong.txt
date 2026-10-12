@@ -1,0 +1,19 @@
+[Q1]
+answer: Overfitting happens when a model memorizes the training data, including its noise, so it performs great on training data but poorly on unseen validation or test data. You usually catch it by watching the gap between training and validation loss.
+latency: 1.8
+duration: 40
+
+[Q2]
+answer: I deployed the recommendation service on EC2 behind a load balancer, used auto-scaling to handle traffic spikes, stored artifacts in S3, ran event-driven feature updates with Lambda, and scoped access with IAM roles per service.
+latency: 2.1
+duration: 55
+
+[Q3]
+answer: I'd use resampling, oversampling the minority class or undersampling the majority, and switch to class weighting in the loss. I'd also stop trusting accuracy and use F1 or PR-AUC instead. XGBoost's scale_pos_weight handles this natively.
+latency: 2.4
+duration: 60
+
+[Q4]
+answer: A load balancer distributes incoming traffic across healthy instances, while an auto-scaling group changes the number of instances based on demand.
+latency: 1.9
+duration: 38
