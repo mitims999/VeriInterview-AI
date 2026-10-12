@@ -18,7 +18,8 @@ numpy==2.2.6
 # Optional, for real (non-adapter-stub) integrations — see docs/MODELS.md and
 # docs/LIMITATIONS.md for exactly what each of these needs (GPU, model downloads,
 # raw audio/video capture) before they can replace their adapter's fixture-driven path:
-# opensmile-python   # audeering/opensmile-python — voice modulation
+# For Member 1 real transcription/prosody, install requirements-audio.txt.
+# opensmile is the Python package name; opensmile-python is the upstream repo.
 # insightface        # deepinsight/insightface — face identity
 # onnxruntime        # required by insightface
 # opencv-python      # required by Proctoring-AI and SyncNet

@@ -24,8 +24,11 @@ from backend.modules.resume import parse_resume_bytes, build_profile
 from backend.modules.pipeline import run_full_analysis
 from backend.modules import intake_parser
 from backend.adapters import video_intake
+from backend.audio_routes import router as audio_router
+from backend.database.audio_models import AudioAnalysisRecord
 
 app = FastAPI(title="VeriInterview API", version="0.1.0")
+app.include_router(audio_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
@@ -279,6 +282,11 @@ def interview_report(interview_id: int, db: Session = Depends(get_db)):
             "response_latency_sec": ans.response_latency_sec if ans else 0.0,
             "answer_duration_sec": ans.answer_duration_sec if ans else 0.0,
         })
+    audio_record = (db.query(AudioAnalysisRecord)
+                    .filter(AudioAnalysisRecord.interview_id == interview_id)
+                    .order_by(AudioAnalysisRecord.created_at.desc()).first())
+    if audio_record:
+        record["speech_features"] = audio_record.result_json.get("answers", [])
     result = run_full_analysis(record)
     rec = models.RiskAssessmentRecord(interview_id=interview_id, result_json=result)
     db.add(rec)

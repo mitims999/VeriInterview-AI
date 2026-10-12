@@ -5,12 +5,16 @@
 | Resume/JD skill match | https://github.com/srbhr/Resume-Matcher | MIT | Contract re-implemented locally (see `backend/adapters/resume_matcher.py`); swap in real textacy pipeline for production |
 | Lip-sync (AV offset/confidence) | https://github.com/joonson/syncnet_python | Non-commercial research license (see repo) | Adapter contract implemented; needs pretrained model + GPU + raw video to run for real |
 | Gaze / head-pose / person+phone | https://github.com/vardanagarwal/Proctoring-AI | MIT | Adapter contract implemented; needs OpenCV/dlib + webcam video to run for real |
-| Voice modulation (eGeMAPSv02) | https://github.com/audeering/opensmile, opensmile-python | **audEERING research license — commercial use requires a separate license, see docs/SECURITY.md** | Adapter contract + heuristic-v1 formula implemented; needs raw audio (.wav) to run for real |
+| Voice modulation (eGeMAPSv02) | https://github.com/audeering/opensmile, opensmile-python | **audEERING research license — commercial use requires a separate license, see docs/SECURITY.md** | Real LLD extraction, quality-aware baseline scoring; legacy fixture interface retained. See AUDIO_INTELLIGENCE.md |
+| Audio transcription | https://github.com/SYSTRAN/faster-whisper | MIT (review model terms separately) | Real CPU Whisper, Silero VAD and word timestamps; uploaded files and bounded live PCM sessions |
 | Face identity | https://github.com/deepinsight/insightface | MIT (code) — model weights have separate non-commercial terms | Adapter contract implemented; needs ONNX buffalo_l models + raw video frames |
 | Expected-answer semantic match | https://github.com/UKPLab/sentence-transformers (all-MiniLM-L6-v2) | Apache 2.0 | Tries the real model first, falls back to scikit-learn TF-IDF cosine similarity if unavailable offline |
 | Knowledge graph | https://github.com/networkx/networkx | BSD | Used directly (`backend/modules/knowledge_ownership.py::build_claim_graph`) |
 
 ## Why adapters, not live model inference, in this build
+
+Member 1's audio path now runs real inference. The original explanation below
+applies to the remaining vision adapters and legacy synthetic demos.
 
 This prototype was assembled in a text-only development session with no GPU, no camera/
 microphone capture, and no guaranteed internet access to download multi-GB pretrained

@@ -1,13 +1,10 @@
 # Known Limitations
 
-1. **A/V, gaze, identity and voice adapters run on structured fixture signals, not raw
-   media.** This environment has no camera/microphone capture and no GPU, so
-   `syncnet_adapter.py`, `proctoring_adapter.py`, `insightface_adapter.py`, and
-   `opensmile_adapter.py` compute their outputs from pre-recorded aggregate signals
-   (`av_signals`, `behavior_signals`, `identity_signals`, `speech_features`) rather than
-   frame-by-frame model inference on a video/audio file. Each adapter's docstring states
-   exactly what to swap in to run the real model. This does not affect the fusion/scoring
-   logic, which is real and fully deterministic.
+1. **Vision adapters still use structured fixture signals.** SyncNet, Proctoring-AI
+   and InsightFace require their real models and video processing integrations.
+   Member 1's audio path now uses real FFmpeg, Whisper and openSMILE inference;
+   synthetic demos retain their original feature-summary interface. See
+   [audio limits and verification](AUDIO_INTELLIGENCE.md).
 2. **Resume/JD keyword extraction is a lightweight heuristic**, not Resume-Matcher's full
    textacy pipeline — it recognizes acronyms, CamelCase identifiers, and a small curated
    technical-phrase list rather than running a full NLP key-term extractor. Skill-match
@@ -27,7 +24,8 @@
    They have not been calibrated against a labeled dataset (none exists for this problem).
 6. **Coding-question evaluation is out of scope** for this MVP (Master Spec Section 38) —
    only spoken/transcribed technical questions are evaluated.
-7. **Interviewer "start interview" live recording flow (Feature 3 of Master Spec Section 4)
-   is not implemented** — this build focuses on interview setup + post-hoc report
-   generation from either the synthetic dataset or manually-entered interview answers, not
-   live MediaRecorder/WebAudio capture in the browser.
+7. **Audio live capture is available separately from the full interview workflow.**
+   The Audio intelligence workspace uses WebAudio PCM capture and a WebSocket for
+   provisional/final transcription and prosody. It requires explicit answer boundaries,
+   has a two-minute answer limit, and assumes a single speaker. It does not implement
+   a complete live video interview, diarization, or automated question segmentation.

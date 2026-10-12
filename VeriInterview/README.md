@@ -36,7 +36,9 @@ Full diagram and module ownership: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md
   (Feature 5).
 - Resume-to-interview skill verification with 6 verdict levels, including the
   `NOT_ASSESSED` (never `DOES_NOT_KNOW`) rule for untested skills (Feature 3).
-- Voice modulation (openSMILE eGeMAPSv02-shaped, candidate-specific baseline, Feature 8).
+- Whisper transcription for uploaded media and live PCM WebSocket audio (team F1).
+- Real openSMILE eGeMAPSv02 voice measurements and quality-aware, candidate-specific
+  baseline analysis (team F3b); the original synthetic demo interface remains available.
 - Eye gaze / head-pose / multi-person / phone-in-frame behavior signals
   (Proctoring-AI-shaped, Feature 7).
 - Lip-sync / A-V consistency (SyncNet-shaped, Feature 6).
@@ -62,7 +64,13 @@ Full diagram and module ownership: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md
 | Face identity | github.com/deepinsight/insightface |
 | Expected-answer matching | github.com/UKPLab/sentence-transformers |
 
-**Important:** this prototype was built in an environment with no GPU, no camera/mic
+**Audio update (Member 1):** real FFmpeg extraction, faster-whisper transcription,
+openSMILE prosody, live microphone controls and persisted audio reports are available.
+See [Audio intelligence setup and API](docs/AUDIO_INTELLIGENCE.md). Select **Audio
+intelligence** in the sidebar after installing the audio dependencies and model.
+
+The other vision adapters retain their original prototype behavior described below.
+The original prototype was built in an environment with no GPU, no camera/mic
 capture, and no guaranteed access to multi-GB model downloads. Each of the repos above is
 wrapped by an **adapter** (`backend/adapters/`) that implements the exact contract the
 Build Spec specifies for that module, computed from structured synthetic signals that
