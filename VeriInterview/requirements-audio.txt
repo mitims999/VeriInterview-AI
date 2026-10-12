@@ -1,0 +1,7 @@
+-r requirements.txt
+
+# Member 1: openSMILE package name is opensmile, not opensmile-python.
+opensmile==2.6.0
+faster-whisper==1.2.1
+soundfile>=0.13,<0.15
+uvicorn[standard]==0.44.0

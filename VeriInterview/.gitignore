@@ -10,6 +10,8 @@ storage/reports/*
 !storage/raw_video/.gitkeep
 !storage/reports/.gitkeep
 .env
+storage/models/
+storage/audio_analysis/
 
 frontend/node_modules/
 frontend/dist/
