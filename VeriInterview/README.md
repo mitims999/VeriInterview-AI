@@ -85,6 +85,16 @@ python scripts/generate_fixtures.py   # (re)generates the 5 synthetic demo candi
 uvicorn backend.main:app --reload --port 8000
 ```
 
+### Optional: real video analysis (M3 — lip-sync, face identity, gaze)
+
+```bash
+pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu   # CPU build
+pip install -r requirements-vision.txt
+python scripts/download_models.py    # model weights → storage/models/ (gitignored)
+```
+
+Without these, the app still runs and the video checks are reported as UNAVAILABLE.
+
 ### Frontend
 
 ```bash
@@ -120,7 +130,7 @@ cd VeriInterview
 python -m pytest tests/ -v
 ```
 
-20 tests: unit tests per module, an integration test across the full
+140 tests (129 fast + 11 model-backed `vision` tests that skip without the M3 datasets/weights; `pytest -m "not vision"` runs only the fast ones): unit tests per module, an integration test across the full
 resume→question→answer→evaluation→skill-verification→risk-fusion path, and end-to-end
 tests over all 5 synthetic demo scenarios asserting the specific robustness properties
 the demo is designed to prove (e.g. a genuine-but-weak candidate must score LOW risk

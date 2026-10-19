@@ -1,13 +1,8 @@
 # Known Limitations
 
-1. **A/V, gaze, identity and voice adapters run on structured fixture signals, not raw
-   media.** This environment has no camera/microphone capture and no GPU, so
-   `syncnet_adapter.py`, `proctoring_adapter.py`, `insightface_adapter.py`, and
-   `opensmile_adapter.py` compute their outputs from pre-recorded aggregate signals
-   (`av_signals`, `behavior_signals`, `identity_signals`, `speech_features`) rather than
-   frame-by-frame model inference on a video/audio file. Each adapter's docstring states
-   exactly what to swap in to run the real model. This does not affect the fusion/scoring
-   logic, which is real and fully deterministic.
+1. **The voice adapter (openSMILE, M1) still runs on structured fixture signals.** The M3 video checks (face identity,
+   lip-sync, gaze/surroundings, blink/mouth cues) now run real models on uploaded video (`backend/vision/`, `docs/m3/`).
+   The demo candidates still use their fixture signals through the same adapters.
 2. **Resume/JD keyword extraction is a lightweight heuristic**, not Resume-Matcher's full
    textacy pipeline — it recognizes acronyms, CamelCase identifiers, and a small curated
    technical-phrase list rather than running a full NLP key-term extractor. Skill-match
@@ -31,3 +26,14 @@
    is not implemented** — this build focuses on interview setup + post-hoc report
    generation from either the synthetic dataset or manually-entered interview answers, not
    live MediaRecorder/WebAudio capture in the browser.
+8. **M3 video checks: known limits** (measured; details in `docs/m3/calibration/`):
+   - **Modern lip-sync generators are not caught.** Wav2Lip / TalkLip / SadTalker / MakeItTalk fakes (AVLips): 0 of 30 flagged,
+     because they are trained against SyncNet (as LipFD, NeurIPS 2024, reported). Face-swaps (31 of 32 flagged with a reference photo),
+     identity switches, frozen faces and dubbed or out-of-sync audio are caught. A dedicated detector (LipFD) is the planned fix.
+   - **Within-session identity cannot see a fake that runs from the first frame.** It needs the optional reference photo.
+   - **Gaze is partial evidence:** it catches reading from off-screen material (OEP: 25 % off-screen vs 2 % normal), but not
+     cheating that keeps the eyes on the screen. On its own it is capped at MEDIUM.
+   - **Short phone glances can be missed:** a phone alert needs 3 consecutive 1-fps detections (this favours avoiding false alarms).
+   - **Speed:** about 0.9x real time on a laptop CPU (a 3-min interview takes ~2.5 min on AC power, 2-4x slower on battery). No GPU path yet.
+   - **Little speech means no lip-sync verdict:** reported as "not assessed", never as risk.
+   - Thresholds were calibrated on public research data (GRID, LFW, OEP, COCO, DeepfakeTIMIT, AVLips), not on real interview recordings.

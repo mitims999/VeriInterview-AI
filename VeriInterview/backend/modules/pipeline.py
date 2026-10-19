@@ -79,7 +79,13 @@ def run_full_analysis(record: dict) -> dict:
         capability_score=cap_score,
     )
 
+    # M3 (N-3): Deepfake Sub-Score from identity + lip-sync + eye cues, report-only for now
+    # (open question Q1 with M5: it does not change the 6 fusion weights above).
+    from backend.modules.deepfake_fusion import fuse_deepfake
+    deepfake = fuse_deepfake(identity_result, sync_result, record.get("eye_authenticity"))
+
     return {
+        "deepfake_assessment": deepfake.model_dump(),
         "assessment": assessment.model_dump(),
         "skill_profile": profile.model_dump(),
         "skill_verdicts": [v.model_dump() for v in verdicts],

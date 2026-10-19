@@ -40,6 +40,9 @@ Timing --> Response Timing analysis  --------------> folds into profile-consiste
 | Voice modulation | audeering/opensmile(-python) | `backend/adapters/opensmile_adapter.py` |
 | Face identity | deepinsight/insightface | `backend/adapters/insightface_adapter.py` |
 | Expected-answer matching | UKPLab/sentence-transformers | `backend/adapters/sentence_embed.py` |
+| Video analysis orchestration (M3) | — | `backend/adapters/video_intake.py`, `backend/vision/*` |
+| Deepfake sub-score (M3) | original | `backend/modules/deepfake_fusion.py` |
+| Video-analysis job API (M3) | — | `backend/api_vision.py` |
 | Knowledge ownership / CCST | original (no repo) | `backend/modules/knowledge_ownership.py` |
 | Evidence fusion | original (no repo) | `backend/modules/evidence_fusion.py` |
 
@@ -68,3 +71,18 @@ VeriInterview/
   tests/          unit + integration tests
   storage/        sqlite db + (empty) raw_audio/raw_video/reports for a live deployment
 ```
+
+## M3 video pipeline (real models)
+
+```
+uploaded video -> media.py (ffmpeg pipes, speech VAD)
+  |-> face_track.py (InsightFace SCRFD + ArcFace, 1 fps) -> identity.py -> insightface_adapter --------------.
+  |      (the shared face track gates which landmark frames count)                                         |
+  |-> landmarks.py (MediaPipe, 10 fps) -> gaze.py -----> proctoring_adapter (behaviour) <- objects.py (YOLOv3, 1 fps)
+  |                                   \-> eye_auth.py --.                                                   |
+  '-> syncnet_runner.py (SyncNet over speech windows) -> syncnet_adapter ----.                              |
+                                                                             v                              v
+                          deepfake_fusion.py (identity + lip-sync + eye cues) -> Deepfake Sub-Score (report-only)
+```
+Stages after identity run in parallel threads. Each check returns a ModuleResult, or UNAVAILABLE / INSUFFICIENT_EVIDENCE when
+it cannot run. Gaze and phone/person are behaviour evidence and never enter the deepfake score. Details: `docs/m3/`.

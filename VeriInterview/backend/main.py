@@ -36,6 +36,10 @@ app.add_middleware(
 
 init_db()
 
+# M3 video analysis (deepfake sub-score, identity, lip-sync, gaze, eye cues) as background jobs.
+from backend.api_vision import router as vision_router  # noqa: E402
+app.include_router(vision_router)
+
 SAMPLES_DIR = os.path.join(os.path.dirname(DATA_DIR), "samples")
 if os.path.isdir(SAMPLES_DIR):
     app.mount("/samples", StaticFiles(directory=SAMPLES_DIR), name="samples")
@@ -94,6 +98,7 @@ async def analyze_intake(
     ideal_answers: UploadFile = File(...),
     transcript: UploadFile = File(...),
     video: Optional[UploadFile] = File(None),
+    reference_photo: Optional[UploadFile] = File(None),   # M3 I-4: optional photo of the registered candidate
 ):
     resume_bytes = await resume.read()
     resume_text = parse_resume_bytes(resume.filename, resume_bytes)
@@ -108,12 +113,28 @@ async def analyze_intake(
     known_skills = sorted({qa["skill"] for qa in qa_list})
     resume_claims = intake_parser.infer_resume_claims(resume_text, known_skills)
 
-    av_signals = None
-    identity_signals = None
+    # M3 (N-2): real vision analysis of the uploaded video (identity, lip-sync, gaze/surroundings,
+    # blink/mouth cues). Runs in a worker thread so the server stays responsive; the upload is
+    # written to a temp file only for decoding and deleted afterwards (no media is kept).
+    av_signals = identity_signals = behavior_signals = eye_authenticity = None
+    vision_meta = None
     if video is not None and video.filename:
         video_bytes = await video.read()
+        photo_bytes = (await reference_photo.read()) if reference_photo is not None and reference_photo.filename else None
         if video_bytes:
-            av_signals, identity_signals = video_intake.derive_av_signals(video_bytes)
+            import tempfile
+            from starlette.concurrency import run_in_threadpool
+            suffix = os.path.splitext(video.filename)[1] or ".mp4"
+            fd, tmp_path = tempfile.mkstemp(suffix=suffix)
+            try:
+                with os.fdopen(fd, "wb") as f:
+                    f.write(video_bytes)
+                vision = await run_in_threadpool(video_intake.analyze_video, tmp_path, reference_photo=photo_bytes or None)
+            finally:
+                os.remove(tmp_path)
+            av_signals, identity_signals = vision["av_signals"], vision["identity_signals"]
+            behavior_signals, eye_authenticity = vision["behavior_signals"], vision["eye_authenticity"]
+            vision_meta = vision.get("meta")
 
     record = {
         "candidate_name": candidate_name,
@@ -122,19 +143,22 @@ async def analyze_intake(
         "resume_claims": resume_claims,
         "qa_list": qa_list,
         "speech_features": None,     # no raw audio captured in this intake flow
-        "behavior_signals": None,    # no webcam/gaze capture in this intake flow
+        "behavior_signals": behavior_signals,
         "identity_signals": identity_signals,
         "av_signals": av_signals,
+        "eye_authenticity": eye_authenticity,
         "counterfactuals": [],
     }
     result = run_full_analysis(record)
     result["video_analysis_note"] = (
-        "Lip-sync/identity signals were derived from the uploaded video file "
-        "deterministically (no GPU/SyncNet/InsightFace decode available in this "
-        "environment) — see backend/adapters/video_intake.py."
+        "Face identity (InsightFace), lip-sync (SyncNet), gaze/surroundings (Proctoring-AI port) and "
+        "blink/mouth cues were analysed from the uploaded video. Checks that could not run are marked "
+        "UNAVAILABLE / INSUFFICIENT_EVIDENCE rather than guessed."
         if video is not None and video.filename
-        else "No video uploaded — lip-sync and face-identity checks are marked UNAVAILABLE."
+        else "No video uploaded — lip-sync, face-identity and gaze checks are marked UNAVAILABLE."
     )
+    if vision_meta:
+        result["video_analysis_meta"] = vision_meta
     return result
 
 

@@ -1,0 +1,11 @@
+clip,check,expected
+s1_genuine.mp4,identity,LOW
+s1_genuine.mp4,sync,LOW
+s1_genuine.mp4,deepfake,LOW
+s1_identity_splice.mp4,identity,HIGH
+s1_identity_splice.mp4,deepfake,HIGH
+s1_av_shift-10.mp4,sync,HIGH
+s1_audio_swap.mp4,sync,HIGH
+s1_low_quality.mp4,sync,LOW
+s1_frozen_face.mp4,eye_authenticity,MEDIUM
+s1_face_occluded.mp4,identity,LOW

@@ -31,6 +31,9 @@ class ModuleResult(BaseModel):
     evidence: List[Evidence] = []
     quality: Quality = Quality()
     status: Literal["OK", "INSUFFICIENT_EVIDENCE", "UNAVAILABLE"] = "OK"
+    # Optional structured extras (e.g. deepfake_fusion sub-scores) for explanations. Additive, default None
+    # (M3 open question Q2 with M5): existing modules and consumers are unaffected.
+    details: Optional[dict] = None
 
 
 class ResumeClaim(BaseModel):

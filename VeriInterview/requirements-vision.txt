@@ -1,0 +1,32 @@
+# M3 Deepfake Vision dependencies (SyncNet lip-sync, InsightFace identity,
+# Proctoring-AI-style gaze/head-pose/person-phone). Optional: the core app and
+# its tests run without these, and the vision adapters report UNAVAILABLE.
+#
+# Install (after requirements.txt), CPU-only PyTorch first to avoid the multi-GB CUDA build:
+#   pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements-vision.txt
+#
+# Verified on Python 3.13.5 / Windows 11.
+
+# --- SyncNet (joonson/syncnet_python, vendored model code) ---
+torch==2.14.1
+python_speech_features==0.6
+
+# --- Face detection + identity (deepinsight/insightface, buffalo_l weights are non-commercial) ---
+insightface==2.1
+onnxruntime==1.31.0
+onnx==1.23.2
+scikit-image==0.26.0
+
+# --- Landmarks / iris / head pose (MediaPipe Face Landmarker, Apache-2.0) ---
+mediapipe==1.1.0
+
+# --- OpenCV: pinned to 4.x. OpenCV 5.0 removed cv2.dnn.readNetFromDarknet (needed for the
+# YOLOv3 person/phone detector ported from Proctoring-AI). mediapipe pulls opencv-contrib-python
+# and insightface pulls opencv-python; both must be the SAME version or they clash over cv2.
+opencv-python==4.14.0.94
+opencv-contrib-python==4.14.0.94
+
+# --- Media decoding: bundled static ffmpeg binary (no system ffmpeg needed) ---
+imageio-ffmpeg==0.6.0
+scipy==1.18.1

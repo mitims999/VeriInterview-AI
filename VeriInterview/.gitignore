@@ -11,6 +11,11 @@ storage/reports/*
 !storage/reports/.gitkeep
 .env
 
+# M3: public calibration datasets (real faces/voices) and model weights — never commit
+datasets/
+storage/models/
+storage/features/
+
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
