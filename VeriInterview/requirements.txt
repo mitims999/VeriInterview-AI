@@ -7,18 +7,22 @@ pypdf==6.16.1
 python-docx==1.2.0
 networkx==3.6.1
 scikit-learn==1.8.0
-numpy==2.2.6
+numpy>=2.2.6
 
 # Optional: enables real sentence-transformers embeddings for the expected-answer
 # matching module (backend/adapters/sentence_embed.py). If not installed, or if the
 # model can't be downloaded, the module transparently falls back to the scikit-learn
 # TF-IDF cosine-similarity path above with no code changes required.
+# Left commented out on the free-tier deployment branch: sentence-transformers pulls
+# in torch + transformers (multi-GB), which exceeds Render's free-plan build/RAM
+# limits. Uncomment for a paid plan or a local run with more resources.
 # sentence-transformers>=3.0
 
 # Optional, for real (non-adapter-stub) integrations — see docs/MODELS.md and
 # docs/LIMITATIONS.md for exactly what each of these needs (GPU, model downloads,
 # raw audio/video capture) before they can replace their adapter's fixture-driven path:
-# opensmile-python   # audeering/opensmile-python — voice modulation
+# For Member 1 real transcription/prosody, install requirements-audio.txt.
+# opensmile is the Python package name; opensmile-python is the upstream repo.
 # insightface        # deepinsight/insightface — face identity
 # onnxruntime        # required by insightface
 # opencv-python      # required by Proctoring-AI and SyncNet

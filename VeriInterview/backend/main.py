@@ -22,10 +22,15 @@ from backend.database.session import init_db, get_db
 from backend.database import models
 from backend.modules.resume import parse_resume_bytes, build_profile
 from backend.modules.pipeline import run_full_analysis
-from backend.modules import intake_parser
+from backend.modules import intake_parser, ai_answer_detector
+from backend.modules import smart_transcript_parser
+from backend.modules import keyword_detector
 from backend.adapters import video_intake
+from backend.audio_routes import router as audio_router
+from backend.database.audio_models import AudioAnalysisRecord
 
 app = FastAPI(title="VeriInterview API", version="0.1.0")
+app.include_router(audio_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
@@ -35,6 +40,10 @@ app.add_middleware(
 )
 
 init_db()
+
+# M3 video analysis (deepfake sub-score, identity, lip-sync, gaze, eye cues) as background jobs.
+from backend.api_vision import router as vision_router  # noqa: E402
+app.include_router(vision_router)
 
 SAMPLES_DIR = os.path.join(os.path.dirname(DATA_DIR), "samples")
 if os.path.isdir(SAMPLES_DIR):
@@ -94,6 +103,7 @@ async def analyze_intake(
     ideal_answers: UploadFile = File(...),
     transcript: UploadFile = File(...),
     video: Optional[UploadFile] = File(None),
+    reference_photo: Optional[UploadFile] = File(None),   # M3 I-4: optional photo of the registered candidate
 ):
     resume_bytes = await resume.read()
     resume_text = parse_resume_bytes(resume.filename, resume_bytes)
@@ -108,12 +118,28 @@ async def analyze_intake(
     known_skills = sorted({qa["skill"] for qa in qa_list})
     resume_claims = intake_parser.infer_resume_claims(resume_text, known_skills)
 
-    av_signals = None
-    identity_signals = None
+    # M3 (N-2): real vision analysis of the uploaded video (identity, lip-sync, gaze/surroundings,
+    # blink/mouth cues). Runs in a worker thread so the server stays responsive; the upload is
+    # written to a temp file only for decoding and deleted afterwards (no media is kept).
+    av_signals = identity_signals = behavior_signals = eye_authenticity = None
+    vision_meta = None
     if video is not None and video.filename:
         video_bytes = await video.read()
+        photo_bytes = (await reference_photo.read()) if reference_photo is not None and reference_photo.filename else None
         if video_bytes:
-            av_signals, identity_signals = video_intake.derive_av_signals(video_bytes)
+            import tempfile
+            from starlette.concurrency import run_in_threadpool
+            suffix = os.path.splitext(video.filename)[1] or ".mp4"
+            fd, tmp_path = tempfile.mkstemp(suffix=suffix)
+            try:
+                with os.fdopen(fd, "wb") as f:
+                    f.write(video_bytes)
+                vision = await run_in_threadpool(video_intake.analyze_video, tmp_path, reference_photo=photo_bytes or None)
+            finally:
+                os.remove(tmp_path)
+            av_signals, identity_signals = vision["av_signals"], vision["identity_signals"]
+            behavior_signals, eye_authenticity = vision["behavior_signals"], vision["eye_authenticity"]
+            vision_meta = vision.get("meta")
 
     record = {
         "candidate_name": candidate_name,
@@ -122,19 +148,22 @@ async def analyze_intake(
         "resume_claims": resume_claims,
         "qa_list": qa_list,
         "speech_features": None,     # no raw audio captured in this intake flow
-        "behavior_signals": None,    # no webcam/gaze capture in this intake flow
+        "behavior_signals": behavior_signals,
         "identity_signals": identity_signals,
         "av_signals": av_signals,
+        "eye_authenticity": eye_authenticity,
         "counterfactuals": [],
     }
     result = run_full_analysis(record)
     result["video_analysis_note"] = (
-        "Lip-sync/identity signals were derived from the uploaded video file "
-        "deterministically (no GPU/SyncNet/InsightFace decode available in this "
-        "environment) — see backend/adapters/video_intake.py."
+        "Face identity (InsightFace), lip-sync (SyncNet), gaze/surroundings (Proctoring-AI port) and "
+        "blink/mouth cues were analysed from the uploaded video. Checks that could not run are marked "
+        "UNAVAILABLE / INSUFFICIENT_EVIDENCE rather than guessed."
         if video is not None and video.filename
-        else "No video uploaded — lip-sync and face-identity checks are marked UNAVAILABLE."
+        else "No video uploaded — lip-sync, face-identity and gaze checks are marked UNAVAILABLE."
     )
+    if vision_meta:
+        result["video_analysis_meta"] = vision_meta
     return result
 
 
@@ -209,6 +238,49 @@ def add_question(interview_id: int, question_text: str = Form(...), skill: str =
     return {"id": q.id}
 
 
+@app.post("/api/interviews/{interview_id}/questions/generate")
+def generate_questions(interview_id: int, max_questions: int = Form(6), db: Session = Depends(get_db)):
+    """
+    Master Spec Section 36 — AI question generation from the interview's
+    resume claims. Returns drafts with ai_generated=True; the interviewer
+    must review/edit (PUT /api/questions/{id}) or delete them before starting
+    the interview. Nothing here is auto-approved into the live question bank
+    without the interviewer's own POST /api/interviews/{id}/questions call,
+    or this endpoint persisting the drafts directly — we persist them as
+    normal Question rows (ai_generated=True) so they appear in the same
+    editable list as manually-entered questions.
+    """
+    interview = db.get(models.Interview, interview_id)
+    if not interview:
+        raise HTTPException(404, "Interview not found")
+
+    from backend.modules import question_generator
+    drafts = question_generator.generate_questions(
+        resume_claims=interview.resume_claims or [],
+        job_description=interview.job_description or "",
+        max_questions=max_questions,
+    )
+    created = []
+    for draft in drafts:
+        q = models.Question(
+            interview_id=interview_id, question_text=draft["question_text"], skill=draft["skill"],
+            difficulty=draft["difficulty"], expected_proficiency=draft["expected_proficiency"],
+            reference_answer=draft["reference_answer"], required_concepts=draft["required_concepts"],
+            ai_generated=True, order_index=len(interview.questions) + len(created),
+        )
+        db.add(q)
+        created.append(q)
+    db.commit()
+    for q in created:
+        db.refresh(q)
+    return {"questions": [
+        {"id": q.id, "question_text": q.question_text, "skill": q.skill, "difficulty": q.difficulty,
+         "expected_proficiency": q.expected_proficiency, "reference_answer": q.reference_answer,
+         "required_concepts": q.required_concepts, "ai_generated": q.ai_generated}
+        for q in created
+    ]}
+
+
 @app.put("/api/questions/{question_id}")
 def update_question(question_id: int, question_text: Optional[str] = Form(None), skill: Optional[str] = Form(None),
                      difficulty: Optional[str] = Form(None), expected_proficiency: Optional[str] = Form(None),
@@ -279,9 +351,147 @@ def interview_report(interview_id: int, db: Session = Depends(get_db)):
             "response_latency_sec": ans.response_latency_sec if ans else 0.0,
             "answer_duration_sec": ans.answer_duration_sec if ans else 0.0,
         })
+    audio_record = (db.query(AudioAnalysisRecord)
+                    .filter(AudioAnalysisRecord.interview_id == interview_id)
+                    .order_by(AudioAnalysisRecord.created_at.desc()).first())
+    if audio_record:
+        record["speech_features"] = audio_record.result_json.get("answers", [])
     result = run_full_analysis(record)
     rec = models.RiskAssessmentRecord(interview_id=interview_id, result_json=result)
     db.add(rec)
     interview.status = "COMPLETED"
     db.commit()
+    return result
+
+
+@app.get("/api/interviews/{interview_id}/ai_detection")
+def interview_ai_detection(interview_id: int, db: Session = Depends(get_db)):
+    """
+    Member 4 — Feature 7: AI Answer Detection for a completed interview.
+
+    Runs the AI-answer detector on the interview's Q&A transcript and returns
+    per-answer suspicion flags (ai_likelihood, triggered signals, severity)
+    plus a module-level risk level.
+
+    This endpoint is designed for human review only — it never makes a
+    hiring or disqualification decision.
+    """
+    interview = db.get(models.Interview, interview_id)
+    if not interview:
+        raise HTTPException(404, "Interview not found")
+
+    from backend.schemas import QAExchange, AnswerEvaluation
+    from backend.modules import answer_evaluation as ae
+
+    qa_list = []
+    for q in interview.questions:
+        ans = q.answer
+        qa_list.append(QAExchange(
+            question_id=str(q.id),
+            question_text=q.question_text,
+            skill=q.skill,
+            difficulty=q.difficulty,
+            expected_proficiency=q.expected_proficiency,
+            reference_answer=q.reference_answer,
+            required_concepts=q.required_concepts or [],
+            candidate_answer=ans.transcript if ans else "",
+            response_latency_sec=ans.response_latency_sec if ans else 0.0,
+            answer_duration_sec=ans.answer_duration_sec if ans else 0.0,
+        ))
+
+    if not qa_list:
+        raise HTTPException(422, "No answered questions found for this interview")
+
+    evaluations = ae.evaluate_all(qa_list)
+    result = ai_answer_detector.run(qa_list, evaluations)
+    return result.model_dump()
+
+
+# ---------------------------------------------------------------------------
+# Smart Analyze: just resume + free-form transcript, no structured format.
+# ---------------------------------------------------------------------------
+
+@app.post("/api/smart-analyze")
+async def smart_analyze(
+    candidate_name: str = Form(...),
+    job_description: str = Form(""),
+    resume: UploadFile = File(...),
+    transcript: UploadFile = File(...),
+):
+    """
+    Smart analysis endpoint — accepts a resume and a free-form audio transcript
+    (e.g. PDF, DOCX, TXT formats). Automatically extracts Q&A pairs, detects skills,
+    cross-references resume claims with interview answers, and runs the full
+    VeriInterview analysis pipeline.
+
+    No structured [Q1] format or separate ideal-answers file needed.
+    """
+    from backend.modules.document_parser import parse_document_bytes
+
+    resume_bytes = await resume.read()
+    transcript_bytes = await transcript.read()
+
+    resume_text = parse_document_bytes(resume.filename or "resume.txt", resume_bytes)
+    transcript_text = parse_document_bytes(transcript.filename or "transcript.txt", transcript_bytes)
+
+    if not resume_text.strip():
+        raise HTTPException(
+            400,
+            "Could not extract readable text from the uploaded resume file. "
+            "Please upload a standard PDF, DOCX, or TXT resume."
+        )
+
+    if not transcript_text.strip():
+        raise HTTPException(
+            400,
+            "Could not extract readable text from the uploaded transcript file. "
+            "Please upload a standard text, PDF, or DOCX transcript."
+        )
+
+    # Step 1: Parse free-form transcript into structured Q&A pairs
+    qa_list = smart_transcript_parser.parse_free_transcript(
+        transcript_text, resume_text
+    )
+
+    if not qa_list:
+        raise HTTPException(
+            400,
+            "Could not extract any Q&A pairs from the transcript. "
+            "Please ensure it contains interview questions and candidate answers "
+            "(e.g. 'Interviewer: ... / Candidate: ...' or 'Q: ... / A: ...')."
+        )
+
+    # Step 2: Infer resume claims from extracted skills
+    known_skills = sorted({qa["skill"] for qa in qa_list})
+    resume_claims = intake_parser.infer_resume_claims(resume_text, known_skills)
+
+    # Step 3: Build the analysis record and run pipeline first
+    record = {
+        "candidate_name": candidate_name,
+        "job_description": job_description,
+        "resume_text": resume_text,
+        "resume_claims": resume_claims,
+        "qa_list": qa_list,
+        "speech_features": None,
+        "behavior_signals": None,
+        "identity_signals": None,
+        "av_signals": None,
+        "counterfactuals": [],
+    }
+    result = run_full_analysis(record)
+
+    # Step 4: Run keyword detection & cross-referencing with answer evaluations
+    kw_report = keyword_detector.detect_all(
+        resume_text=resume_text,
+        transcript_text=transcript_text,
+        qa_list=qa_list,
+        evaluations=result.get("answer_evaluations", []),
+    )
+
+    # Step 5: Enrich with keyword detection + cross-reference data
+    result["keyword_detection"] = kw_report
+    result["transcript_skills"] = smart_transcript_parser.extract_skills_from_transcript(transcript_text)
+    result["parsed_questions_count"] = len(qa_list)
+    result["analysis_mode"] = "smart"
+
     return result

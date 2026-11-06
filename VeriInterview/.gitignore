@@ -10,6 +10,13 @@ storage/reports/*
 !storage/raw_video/.gitkeep
 !storage/reports/.gitkeep
 .env
+storage/models/
+storage/audio_analysis/
+
+# M3: public calibration datasets (real faces/voices) and model weights — never commit
+datasets/
+storage/models/
+storage/features/
 
 frontend/node_modules/
 frontend/dist/

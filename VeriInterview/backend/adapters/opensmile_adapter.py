@@ -11,13 +11,10 @@ LICENSING NOTE: openSMILE is free for research/non-commercial use under the
 audEERING research license; commercial deployment requires a separate license.
 This must be flagged in the README (Build Spec instruction 8) — done.
 
-INTEGRATION NOTE: opensmile-python extracts eGeMAPSv02 low-level descriptors
-directly from a WAV file. No raw audio is available in this text-only
-session, so this adapter consumes the same per-answer acoustic feature
-summary opensmile-python would emit (pitch/loudness/rate/pause/ratio) from
-the synthetic fixtures and applies the exact heuristic-v1 formula from the
-spec. Swap `_extract_features()` for a real `opensmile.Smile(feature_set=
-opensmile.FeatureSet.eGeMAPSv02)` call when audio is available.
+Real audio: extract_features() runs eGeMAPSv02 low-level descriptors and
+analyze_answers() performs quality-aware scoring. compute() accepts those
+typed measurements or retains the legacy fixture interface for demo records.
+Synthetic fixture scores are not measurements extracted from recordings.
 
 Section 35 compliance ("what Claude Code must NOT implement"):
 - no emotion-as-cheating inference
@@ -50,16 +47,20 @@ def compute(per_answer_features: list[dict] | None) -> ModuleResult:
     keys: pitch_hz, loudness_db, speech_rate_wpm, pause_ratio, speech_silence_ratio
     The first 2 (or up to 1/3) answers form the candidate-specific baseline.
     """
-    if not per_answer_features or len(per_answer_features) < 2:
+    if per_answer_features and (hasattr(per_answer_features[0], "metrics") or "metrics" in per_answer_features[0]):
+        from backend.audio_schemas import AnswerAudioFeatures
+        return analyze_answers([AnswerAudioFeatures.model_validate(a) for a in per_answer_features]).result
+
+    if not per_answer_features or len(per_answer_features) < 3:
         return ModuleResult(
             feature="speech_behavior", score=0, confidence=0.0, level="UNAVAILABLE", status="INSUFFICIENT_EVIDENCE",
             evidence=[Evidence(type="speech_behavior", severity="low", message="Insufficient answers to build a candidate speech baseline.")],
             quality=Quality(data_quality=0.0, baseline_sufficient=False),
         )
 
-    baseline_n = max(2, len(per_answer_features) // 3)
+    baseline_n = min(max(2, len(per_answer_features) // 3), len(per_answer_features) - 1)
     baseline = per_answer_features[:baseline_n]
-    test = per_answer_features[baseline_n:] or per_answer_features[1:]
+    test = per_answer_features[baseline_n:]
 
     def bl(key):
         vals = [a[key] for a in baseline]
@@ -94,7 +95,6 @@ def compute(per_answer_features: list[dict] | None) -> ModuleResult:
     evidence = []
     worst = max(per_q_devs, key=lambda d: d[1]) if per_q_devs else None
     if worst and worst[1] > 1.5:
-        rate_change_pct = (worst[2]) * (rs / rm * 100 if rm else 0)
         evidence.append(Evidence(
             type="speech_rate", severity="high" if worst[1] > 2.5 else "medium",
             question_id=worst[0],
@@ -111,3 +111,15 @@ def compute(per_answer_features: list[dict] | None) -> ModuleResult:
         feature="speech_behavior", score=round(score, 1), confidence=confidence, level=level,
         evidence=evidence, quality=Quality(data_quality=0.9, baseline_sufficient=True),
     )
+
+
+def extract_features(*args, **kwargs):
+    """Extract real pitch/loudness/timing measurements from prepared audio."""
+    from backend.modules.speech_behavior.extractor import extract_features as extract
+    return extract(*args, **kwargs)
+
+
+def analyze_answers(answers):
+    """Return detailed per-answer scores and the existing fusion contract."""
+    from backend.modules.speech_behavior.scorer import score_answers
+    return score_answers(answers)

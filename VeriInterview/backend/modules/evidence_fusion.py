@@ -7,6 +7,24 @@ deterministic weighted formula — never LLM-controlled (Master Spec Section
 evidence[]); this engine combines them into one 0-100 Integrity Risk Score
 + a separate Confidence score, and reports Candidate Capability separately
 (never merged into the risk number, per Build Spec Section 4).
+
+Owned by Member 5 (pipeline/evidence-fusion owner). Integration decisions
+made here when merging the other members' work:
+
+- identity_risk and sync_risk are kept as SEPARATE top-level weighted
+  components (unchanged from the original 6-weight table) rather than
+  collapsed into Member 3's single `deepfake_risk` sub-score, because the
+  5-scenario end-to-end tests assert on `components["identity_risk"]` and
+  `components["sync_risk"]` independently (non-negotiable per project rule).
+  Member 3's `fuse_deepfake()` result is still computed in pipeline.py and
+  returned to the report as `deepfake_assessment` + surfaced by
+  `xai_explainer.py` as an "Authenticity" explanation group — it does not
+  additionally change the weighted sum here, which would double-count
+  identity/sync evidence.
+- Member 4's `ai_answer_detection` and Member 2's `keyword_detector` outputs
+  are blended INTO the existing `knowledge_ownership_risk` and
+  `profile_consistency_risk` components respectively (see pipeline.py), so
+  the six FUSION_WEIGHTS keys never had to change or be rebalanced.
 """
 from __future__ import annotations
 from backend.config import FUSION_WEIGHTS, FUSION_CAPS, RISK_THRESHOLDS
@@ -55,35 +73,46 @@ def fuse(
             capability_score=capability_score,
             components={k: v.model_dump() for k, v in components.items()},
             evidence_timeline=[], recommended_action="Insufficient evidence collected — re-run analysis before review.",
+            component_contributions={},
         )
 
     # Redistribute weight of unavailable modules proportionally across available ones.
     total_available_weight = sum(weights[k] for k in available)
-    weighted_sum = 0.0
-    for k, mod in available.items():
-        module_weight = weights[k] / total_available_weight
-        # Cap: no single module's contribution can exceed FUSION_CAPS.max_single_module_contribution
-        # of the *total* fused score (prevents one noisy signal from dominating).
-        capped_weight = min(module_weight, FUSION_CAPS.max_single_module_contribution)
-        weighted_sum += capped_weight * mod.score
-    # renormalize after capping so scores still land in 0-100
-    cap_norm = sum(min(weights[k] / total_available_weight, FUSION_CAPS.max_single_module_contribution) for k in available)
-    risk_score = weighted_sum / cap_norm if cap_norm else 0.0
+    effective_weight = {
+        k: min(weights[k] / total_available_weight, FUSION_CAPS.max_single_module_contribution)
+        for k in available
+    }
+    cap_norm = sum(effective_weight.values())
+    # Pre-corroboration contribution of each component, in points of the final 0-100 score.
+    contributions = {k: (effective_weight[k] / cap_norm) * mod.score for k, mod in available.items()} if cap_norm else {}
+    risk_score = sum(contributions.values())
 
     # Corroboration principle (Master Spec Section 33): one HIGH signal alone
     # must not decide anything, but when MULTIPLE INDEPENDENT modules
     # independently land HIGH, that agreement is itself evidence and modestly
     # increases the fused score (capped so it cannot alone cross a bucket
-    # boundary from a single corroborating pair).
+    # boundary from a single corroborating pair). The boost is distributed
+    # back across the same components proportionally so contributions still
+    # sum exactly to risk_score.
     high_count = sum(1 for mod in available.values() if mod.level == "HIGH")
-    if high_count >= 2:
-        risk_score = min(100.0, risk_score * (1.0 + 0.15 * (high_count - 1)))
+    if high_count >= 2 and risk_score > 0:
+        boost_factor = 1.0 + 0.15 * (high_count - 1)
+        boosted = min(100.0, risk_score * boost_factor)
+        rescale = boosted / risk_score
+        contributions = {k: v * rescale for k, v in contributions.items()}
+        risk_score = boosted
 
-    # Confidence: weighted average of module confidences, penalized by missing-module coverage
+    # Confidence (Master Spec Section 16): weighted module confidence, each
+    # discounted by that module's own data quality / baseline sufficiency,
+    # then penalized for missing-module coverage and for wide disagreement
+    # between modules' confidences.
     coverage_ratio = len(available) / len(components)
-    conf_weighted = sum(weights[k] * mod.confidence for k, mod in available.items()) / total_available_weight
-    # agreement bonus: if module confidences disagree wildly, reduce overall confidence
-    confs = [mod.confidence for mod in available.values()]
+    quality_adjusted_conf = {
+        k: mod.confidence * mod.quality.data_quality * (1.0 if mod.quality.baseline_sufficient else 0.7)
+        for k, mod in available.items()
+    }
+    conf_weighted = sum(weights[k] * quality_adjusted_conf[k] for k in available) / total_available_weight
+    confs = list(quality_adjusted_conf.values())
     spread_penalty = (max(confs) - min(confs)) * 0.15 if len(confs) > 1 else 0.0
     confidence = max(0.05, min(0.99, conf_weighted * (0.5 + 0.5 * coverage_ratio) - spread_penalty))
 
@@ -105,6 +134,9 @@ def fuse(
         components={k: v.model_dump() for k, v in components.items()},
         evidence_timeline=timeline,
         recommended_action=recommended_action,
+        # Kept at higher precision than risk_score's own rounding so
+        # round(sum(component_contributions.values()), 1) == risk_score exactly.
+        component_contributions={k: round(v, 4) for k, v in contributions.items()},
     )
 
 

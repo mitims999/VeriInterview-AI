@@ -1,0 +1,47 @@
+PRIYA SHARMA
+Senior Software Engineer
+
+Contact: priya.sharma@email.com | LinkedIn: linkedin.com/in/priyasharma
+
+SUMMARY
+Results-driven and passionate software engineer with 5+ years of experience in building scalable distributed systems. A dynamic, self-motivated team player who leverages cutting-edge technologies to deliver best-in-class solutions.
+
+TECHNICAL SKILLS
+- Languages: Python, JavaScript, TypeScript, Java, Go
+- Frameworks: React, Django, Flask, FastAPI, Express.js, Spring Boot
+- Cloud: AWS (EC2, S3, Lambda, IAM, CloudFront, SQS, DynamoDB, RDS, VPC, EKS)
+- DevOps: Docker, Kubernetes, Terraform, Jenkins, GitHub Actions, CI/CD
+- Databases: PostgreSQL, MongoDB, Redis, Elasticsearch, DynamoDB
+- Machine Learning: TensorFlow, PyTorch, scikit-learn, MLflow, deep learning
+- Tools: Git, Linux, Kafka, RabbitMQ, GraphQL, gRPC
+- Concepts: Microservices, Event-Driven Architecture, System Design, Agile, Scrum
+
+EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc. | 2021 - Present
+- Designed and built a scalable data processing pipeline using AWS Lambda, S3, and SQS handling 10,000+ files daily
+- Led migration from monolithic architecture to 15 microservices running on Kubernetes (EKS)
+- Implemented auto-scaling policies reducing infrastructure costs by 35%
+- Built real-time monitoring dashboards using React and D3.js
+- Deployed machine learning models for anomaly detection using TensorFlow and MLflow
+
+Software Engineer | StartupXYZ | 2019 - 2021
+- Developed REST APIs using FastAPI and Django serving 2M+ requests/day
+- Optimized PostgreSQL queries from 45s to 200ms through indexing and query rewriting
+- Implemented JWT-based authentication and RBAC authorization system
+- Built CI/CD pipelines using GitHub Actions and Docker
+- Contributed to blockchain-based supply chain tracking proof of concept
+
+Junior Developer | WebAgency | 2018 - 2019
+- Built responsive web applications using React, Redux, and TypeScript
+- Experience with Node.js and Express for backend development
+- Familiar with basic NLP concepts and data science workflows
+
+EDUCATION
+B.Tech Computer Science | IIT Delhi | 2018
+- GPA: 8.7/10
+- Relevant coursework: Data Structures, Algorithms, Machine Learning, Distributed Systems
+
+CERTIFICATIONS
+- AWS Solutions Architect Associate
+- Kubernetes Application Developer (CKAD)

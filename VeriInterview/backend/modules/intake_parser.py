@@ -64,27 +64,55 @@ _MEDIUM_VERBS = ("experience with", "worked with", "used", "developed", "contrib
 _WEAK_VERBS = ("familiar with", "exposure to", "basic knowledge of", "learning")
 
 
+_SKILL_SYNONYMS = {
+    "deep learning": ["deep learning", "tensorflow", "pytorch", "mobilenet", "ann", "cnn", "neural network"],
+    "machine learning": ["machine learning", "scikit-learn", "kmeans", "dbscan", "clustering", "ml"],
+    "rag / generative ai": ["rag", "retrieval", "groq", "gemini", "generative ai"],
+    "rest api": ["rest", "api", "fastapi", "flask", "django"],
+    "sql / databases": ["sql", "postgresql", "mysql", "mongodb", "database"],
+    "docker": ["docker", "container"],
+    "kubernetes": ["kubernetes", "k8s"],
+    "python": ["python"],
+}
+
+
 def infer_resume_claims(resume_text: str, known_skills: list[str]) -> list[dict]:
     """
-    Very small heuristic: split the resume into sentences, and for each sentence
-    that mentions a skill already used in the question bank, classify claim
-    strength from its verb. A real deployment would use an LLM extractor here
-    (Master Spec Section 31 — LLM only ever generates/extracts text, never scores).
+    Parse resume text into individual skill claims.
+    Handles multi-line resumes, bullet points, projects, and skill sections.
     """
     claims = []
-    sentences = re.split(r"(?<=[.!?])\s+", resume_text)
-    for sentence in sentences:
-        sl = sentence.lower()
+    seen = set()
+
+    # Split into lines/bullets
+    units = []
+    for line in resume_text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        clean = re.sub(r'^[\s•\-\*–—\d\.\)]+', '', line).strip()
+        if clean:
+            units.append(clean)
+
+    for unit in units:
+        ul = unit.lower()
+        is_project = any(w in ul for w in ["built", "designed", "developed", "project", "system", "classifier", "simulator", "trained", "deployed"])
         for skill in known_skills:
-            if skill.lower() in sl:
-                if any(v in sl for v in _STRONG_VERBS):
+            sk_lower = skill.lower()
+            synonyms = _SKILL_SYNONYMS.get(sk_lower, [sk_lower])
+            if any(syn in ul for syn in synonyms):
+                key = (sk_lower, unit[:60])
+                if key in seen:
+                    continue
+                seen.add(key)
+                if any(v in ul for v in _STRONG_VERBS) or is_project:
                     strength = "strong"
-                elif any(v in sl for v in _MEDIUM_VERBS):
+                elif any(v in ul for v in _MEDIUM_VERBS):
                     strength = "medium"
-                elif any(v in sl for v in _WEAK_VERBS):
+                elif any(v in ul for v in _WEAK_VERBS):
                     strength = "weak"
                 else:
-                    strength = "medium"
-                claims.append({"skill": skill, "claim_text": sentence.strip(), "claim_strength": strength})
-                break
+                    strength = "strong" if is_project else "medium"
+                claims.append({"skill": skill, "claim_text": unit, "claim_strength": strength})
+
     return claims

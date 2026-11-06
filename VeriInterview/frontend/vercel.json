@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://veriinterview-backend.onrender.com/api/:path*" },
+    { "source": "/samples/:path*", "destination": "https://veriinterview-backend.onrender.com/samples/:path*" }
+  ]
+}

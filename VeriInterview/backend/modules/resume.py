@@ -8,20 +8,11 @@ from backend.adapters.resume_matcher import extract_skill_profile
 from backend.schemas import SkillProfile
 
 
+from backend.modules.document_parser import parse_document_bytes
+
+
 def parse_resume_bytes(filename: str, content: bytes) -> str:
-    lower = filename.lower()
-    try:
-        if lower.endswith(".pdf"):
-            from pypdf import PdfReader
-            reader = PdfReader(io.BytesIO(content))
-            return "\n".join((page.extract_text() or "") for page in reader.pages)
-        if lower.endswith(".docx"):
-            import docx
-            doc = docx.Document(io.BytesIO(content))
-            return "\n".join(p.text for p in doc.paragraphs)
-        return content.decode("utf-8", errors="ignore")
-    except Exception:
-        return content.decode("utf-8", errors="ignore")
+    return parse_document_bytes(filename, content)
 
 
 def build_profile(resume_text: str, job_description: str, resume_claims_raw: list[dict]) -> SkillProfile:

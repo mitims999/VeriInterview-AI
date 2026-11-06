@@ -13,7 +13,15 @@
 All candidate names, resumes, transcripts and signal values are entirely fabricated for
 this hackathon prototype. No real biometric or personal data is used anywhere in the system.
 
-## Public datasets referenced for future calibration (not bundled, not required to run the demo)
+## Public datasets used to calibrate the M3 video checks (not bundled, not required to run the demo)
+
+M3 downloaded these and used them offline (full catalogue, licences and download links: `docs/m3/M3_DATA.md`; results:
+`docs/m3/calibration/`): **GRID** (lip-sync shifts/swaps, speech timing, generated test clips), **LFW** (identity threshold),
+**DeepfakeTIMIT + VidTIMIT** (face-swaps + real references), **OEP** (exam proctoring: gaze, phone, stressed-real footage),
+**COCO val2017** (person/phone), **AVLips** (lip-sync fakes), **Mendeley suspicious-behaviour** (feature ranges).
+They stay in gitignored `datasets/` and are deleted at the end of M3.
+
+## Public datasets referenced for other modules
 
 - **LFW** (Labeled Faces in the Wild) — face verification sanity-check for InsightFace, when integrated for real.
 - **RAVDESS** (https://zenodo.org/records/1188976) — prosody/pitch/loudness validation for openSMILE.

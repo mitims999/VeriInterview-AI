@@ -30,10 +30,12 @@ face-identity check). Synthetic sample files (no video) ship in
 - `resume_ai_assisted.txt` + `transcript_ai_assisted.txt` → MEDIUM/HIGH risk (Q3 latency spike)
 
 Leave the video field empty to see lip-sync/face-identity marked UNAVAILABLE (confidence
-drops accordingly instead of guessing); attach any short video file to see those two
-checks run (deterministically derived from the file's bytes — see
-`backend/adapters/video_intake.py` and `docs/LIMITATIONS.md` for why real SyncNet/
-InsightFace decoding isn't wired into this environment).
+drops accordingly instead of guessing). Attach an interview video (and optionally a reference
+photo of the candidate) to run the real M3 checks: face identity (InsightFace), lip-sync
+(SyncNet), gaze/surroundings and blink/mouth cues, plus the Deepfake Sub-Score
+(`deepfake_assessment`). Analysis runs at about real time on a laptop CPU (needs
+`requirements-vision.txt` + `scripts/download_models.py`). The frontend can use the
+`/api/vision/jobs` background-job API instead (see `docs/API.md`).
 
 ## 4. Demo Candidates mode (dropdown, top right)
 

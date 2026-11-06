@@ -12,4 +12,8 @@ def capability_score(evaluations: list[AnswerEvaluation], buzzword_coverage_scor
     if not evaluations:
         return 0.0
     avg_answer_score = sum(e.score for e in evaluations) / len(evaluations)
-    return round(0.7 * avg_answer_score + 0.3 * buzzword_coverage_score, 1)
+    # If the candidate fails the technical questions (score < 40),
+    # buzzword name-dropping must not artificially inflate capability!
+    if avg_answer_score < 40:
+        return round(avg_answer_score, 1)
+    return round(0.85 * avg_answer_score + 0.15 * min(avg_answer_score, buzzword_coverage_score), 1)
